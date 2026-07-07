@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Tagged</title>
+        <item>
+            <title>1.0</title>
+            <pubDate>Tue, 07 Jul 2026 21:37:00 +0200</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/akandor/Tagged/releases/download/1.0-b1/Tagged-1.0-b1.zip" length="4100935" type="application/octet-stream" sparkle:edSignature="sobCmbjgtiHQXousmI+wj3PRfJ80Ymf9Jd0kqSv7K5IMCocfGFk3beYSPYC+qFE0oNz9ecaa2RjXbSJAasDpDQ=="/>
+        </item>
+    </channel>
+</rss>
