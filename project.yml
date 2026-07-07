@@ -1,0 +1,65 @@
+name: TaggdMac
+options:
+  bundleIdPrefix: com.toepper.rocks
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: "2.6.4"
+
+targets:
+  TaggdMac:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      # macOS-only sources + asset catalog (Info.plist is generated below).
+      - path: TaggdMac
+        excludes:
+          - "Info.plist"
+      # Cross-platform files shared with the iOS app, referenced in place.
+      - path: Taggd/Models.swift
+      - path: Taggd/TimeTaggerClient.swift
+      - path: Taggd/TagStore.swift
+      - path: Taggd/Theme.swift
+      - path: Taggd/FlowLayout.swift
+      - path: Taggd/TimeTracker.swift
+      # Bundled Roboto Mono faces (registered at launch by FontRegistrar).
+      - path: Taggd/fonts
+        buildPhase: resources
+    dependencies:
+      - package: Sparkle
+    info:
+      path: TaggdMac/Info.plist
+      properties:
+        LSUIElement: true
+        CFBundleDisplayName: Tagged
+        CFBundleName: Tagged
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        NSHumanReadableCopyright: "© 2026 Toepper.Rocks"
+        # --- Sparkle ---
+        SUFeedURL: https://raw.githubusercontent.com/akandor/Tagged/main/appcast.xml
+        # Replace with the public key printed by Sparkle's `generate_keys` tool.
+        SUPublicEDKey: MvtuCUMHoS4RNuoyaqIxBezAk1TtgPThJGTHsDFBnzw=
+        SUEnableAutomaticChecks: true
+        SUScheduledCheckInterval: 86400
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.toepper.rocks.TaggdMac
+        PRODUCT_NAME: Tagged
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        DEVELOPMENT_TEAM: UE57845B3R
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_HARDENED_RUNTIME: YES
+        SWIFT_VERSION: "5.0"
+        SWIFT_APPROACHABLE_CONCURRENCY: YES
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+        SWIFT_EMIT_LOC_STRINGS: YES

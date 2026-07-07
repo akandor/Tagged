@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+*.swp
+
+# Xcode / Swift
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+.swiftpm/
+Packages/
+Package.resolved
+*.xcworkspace/xcshareddata/swiftpm/
+
+# .NET / Windows (TaggdWin)
+[Bb]in/
+[Oo]bj/
+publish/
+Releases/
+*.user
+.vs/
+
+# Tooling
+graphify-out/
+.claude/settings.local.json

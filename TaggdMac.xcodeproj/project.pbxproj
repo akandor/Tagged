@@ -1,0 +1,496 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		044FDAFBCBE0F52227DD421F /* TaggdMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F3637664C65CB12E9DB531 /* TaggdMacApp.swift */; };
+		115D14E619A46363BA0F8130 /* RobotoMono-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56560B3185FE13A97317D644 /* RobotoMono-SemiBoldItalic.ttf */; };
+		145376F15F2B839B5491CE98 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C47B760E21FE8CAA4C5A26 /* StatusBarController.swift */; };
+		226A7868A6A36904912D9F13 /* RobotoMono-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9826688E8E26F3D1144EED6C /* RobotoMono-LightItalic.ttf */; };
+		2B286270366011232E6A0222 /* RobotoMono-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BF994BB9614D10502A84828 /* RobotoMono-Thin.ttf */; };
+		386A7FEC0C6D5D9BDF987658 /* RobotoMono-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7BFE4E62AA4DE369B65287D /* RobotoMono-BoldItalic.ttf */; };
+		447C0CC54FFBA9F7985A5B17 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD087CB7D2C449812A4D7AE0 /* AppModel.swift */; };
+		4AB7B5EA5A37641F3E10F604 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580D3B84AD493E9D31CE39CF /* Models.swift */; };
+		4B5B8F114095F1F5BD24E535 /* RobotoMono-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0EB746AEC462F349DA51B6C8 /* RobotoMono-ExtraLight.ttf */; };
+		4CC0EDF03B738BC01F910833 /* TimeTaggerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A438A25F5D4221087B5371E8 /* TimeTaggerClient.swift */; };
+		4E8FCC8127B68270C31F8814 /* RobotoMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EC5BBBD725F8C8828935EDB /* RobotoMono-Regular.ttf */; };
+		522FA0A26F93C2EF9CD5622D /* RobotoMono-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41C23A9912A4FCA74B840B24 /* RobotoMono-ExtraLightItalic.ttf */; };
+		5D23F40AA2BC8464897AF648 /* UpdaterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C4A45F9367D2BE235EB041 /* UpdaterViewModel.swift */; };
+		62E3F59D7F4B2EFBDC3FE4C5 /* MacLiveActivityShim.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0167229484053E2BCAE737F /* MacLiveActivityShim.swift */; };
+		6C2CC654C289A683E2D144B2 /* RobotoMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6791E470ECBD2F51D2F58AC /* RobotoMono-MediumItalic.ttf */; };
+		84D148FCDD8247E6C7748908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD63CCC3513D7EACCB140A73 /* AppDelegate.swift */; };
+		8FD88D462F9AD600D246FFF1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59C28CF20E23F29F1DD8E82 /* Theme.swift */; };
+		928B9505A23DF7C87AB3C3EB /* LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF212ED688BE6B2C2E9446CB /* LaunchAtLogin.swift */; };
+		9765C40B971CAC0CDECC16A4 /* RobotoMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DCF017FB8A54181F12BB6922 /* RobotoMono-Light.ttf */; };
+		9BF6D2CEBC031CE1CE924A64 /* MacSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49829F6C6CC42842AF95A50B /* MacSettingsView.swift */; };
+		9C5857322F1B9DF8695155C6 /* RobotoMono-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 786F44CE87ADE728FF67613D /* RobotoMono-SemiBold.ttf */; };
+		9CEF9A5D51B8CEB7E45051F8 /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B1889170ACA0E8EF439F32 /* RobotoMono-Bold.ttf */; };
+		9FBCEED3A3CFC9FE6A2297CB /* RobotoMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D09D1587A9908B5119AA3597 /* RobotoMono-Medium.ttf */; };
+		C3261047489EE5D8133F0CB7 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C80672C0F9F7906EC6ED5A4 /* FlowLayout.swift */; };
+		C63DD53B2FFD4569002AF6A2 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C63DD53A2FFD4569002AF6A2 /* AppIcon.icon */; };
+		C6A842A7C08744815790239C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3F04FE6E40691D833A444AA /* Assets.xcassets */; };
+		C9439BFA30C290F2AC13DA79 /* RobotoMono-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17A37F85D5DAC59B58F2FC11 /* RobotoMono-Italic.ttf */; };
+		CB1ECBD7A9AF056FD59E63A3 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB347217B9A25082E7BAA99 /* Components.swift */; };
+		D1F17A7336D04BA0301A20EB /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 52A12C6860ACCD9E9E2B6336 /* Sparkle */; };
+		E041177B77002A8B9B9DEE1D /* TagStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33087B051DBC2FA9A19010A0 /* TagStore.swift */; };
+		E54636294D3E80A78B4F941B /* MacTagManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E29E1B45AFB806F41A3CC56 /* MacTagManagerView.swift */; };
+		F0700BD12025C0B674718649 /* RobotoMono-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76F7EAAD3ADB8E166B857F5C /* RobotoMono-ThinItalic.ttf */; };
+		F4307EFCAEF9F633A0BBFA3C /* MenuBarRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24BF3E0062AD97E328E3656 /* MenuBarRootView.swift */; };
+		F8E1A88E802263F3D356BDBD /* TimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FAA711D1851C87F4469799 /* TimeTracker.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0BF994BB9614D10502A84828 /* RobotoMono-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Thin.ttf"; sourceTree = "<group>"; };
+		0EB746AEC462F349DA51B6C8 /* RobotoMono-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-ExtraLight.ttf"; sourceTree = "<group>"; };
+		17A37F85D5DAC59B58F2FC11 /* RobotoMono-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Italic.ttf"; sourceTree = "<group>"; };
+		26FAA711D1851C87F4469799 /* TimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTracker.swift; sourceTree = "<group>"; };
+		33087B051DBC2FA9A19010A0 /* TagStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStore.swift; sourceTree = "<group>"; };
+		36C4A45F9367D2BE235EB041 /* UpdaterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdaterViewModel.swift; sourceTree = "<group>"; };
+		38B1889170ACA0E8EF439F32 /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
+		3C80672C0F9F7906EC6ED5A4 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
+		41C23A9912A4FCA74B840B24 /* RobotoMono-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		49829F6C6CC42842AF95A50B /* MacSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacSettingsView.swift; sourceTree = "<group>"; };
+		56560B3185FE13A97317D644 /* RobotoMono-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		580D3B84AD493E9D31CE39CF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		5EC5BBBD725F8C8828935EDB /* RobotoMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Regular.ttf"; sourceTree = "<group>"; };
+		73F3637664C65CB12E9DB531 /* TaggdMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggdMacApp.swift; sourceTree = "<group>"; };
+		76F7EAAD3ADB8E166B857F5C /* RobotoMono-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-ThinItalic.ttf"; sourceTree = "<group>"; };
+		786F44CE87ADE728FF67613D /* RobotoMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-SemiBold.ttf"; sourceTree = "<group>"; };
+		9826688E8E26F3D1144EED6C /* RobotoMono-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-LightItalic.ttf"; sourceTree = "<group>"; };
+		9E29E1B45AFB806F41A3CC56 /* MacTagManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacTagManagerView.swift; sourceTree = "<group>"; };
+		A438A25F5D4221087B5371E8 /* TimeTaggerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTaggerClient.swift; sourceTree = "<group>"; };
+		AD087CB7D2C449812A4D7AE0 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		AD63CCC3513D7EACCB140A73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B6791E470ECBD2F51D2F58AC /* RobotoMono-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-MediumItalic.ttf"; sourceTree = "<group>"; };
+		BC16ADAB4A63BA327E411DDB /* TaggdMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = TaggdMac.app; path = Tagged.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C24BF3E0062AD97E328E3656 /* MenuBarRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarRootView.swift; sourceTree = "<group>"; };
+		C3F04FE6E40691D833A444AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C63DD53A2FFD4569002AF6A2 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		D09D1587A9908B5119AA3597 /* RobotoMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Medium.ttf"; sourceTree = "<group>"; };
+		D3C47B760E21FE8CAA4C5A26 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		D59C28CF20E23F29F1DD8E82 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D7BFE4E62AA4DE369B65287D /* RobotoMono-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-BoldItalic.ttf"; sourceTree = "<group>"; };
+		DCF017FB8A54181F12BB6922 /* RobotoMono-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Light.ttf"; sourceTree = "<group>"; };
+		E0167229484053E2BCAE737F /* MacLiveActivityShim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacLiveActivityShim.swift; sourceTree = "<group>"; };
+		EEB347217B9A25082E7BAA99 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		EF212ED688BE6B2C2E9446CB /* LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLogin.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CA24F6CCB6718DD1E68142CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F17A7336D04BA0301A20EB /* Sparkle in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4103973BC63B6BE192B3E937 /* Taggd */ = {
+			isa = PBXGroup;
+			children = (
+				3C80672C0F9F7906EC6ED5A4 /* FlowLayout.swift */,
+				580D3B84AD493E9D31CE39CF /* Models.swift */,
+				33087B051DBC2FA9A19010A0 /* TagStore.swift */,
+				D59C28CF20E23F29F1DD8E82 /* Theme.swift */,
+				A438A25F5D4221087B5371E8 /* TimeTaggerClient.swift */,
+				26FAA711D1851C87F4469799 /* TimeTracker.swift */,
+				B466C516A019BD03FF3E056F /* fonts */,
+			);
+			path = Taggd;
+			sourceTree = "<group>";
+		};
+		4DFF41F88651FC7D9702957E = {
+			isa = PBXGroup;
+			children = (
+				4103973BC63B6BE192B3E937 /* Taggd */,
+				6EEC6EB4AE1DB4183F005AC2 /* TaggdMac */,
+				E7396B42F394585AAE62FE3D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6EEC6EB4AE1DB4183F005AC2 /* TaggdMac */ = {
+			isa = PBXGroup;
+			children = (
+				C63DD53A2FFD4569002AF6A2 /* AppIcon.icon */,
+				AD63CCC3513D7EACCB140A73 /* AppDelegate.swift */,
+				AD087CB7D2C449812A4D7AE0 /* AppModel.swift */,
+				C3F04FE6E40691D833A444AA /* Assets.xcassets */,
+				EEB347217B9A25082E7BAA99 /* Components.swift */,
+				EF212ED688BE6B2C2E9446CB /* LaunchAtLogin.swift */,
+				E0167229484053E2BCAE737F /* MacLiveActivityShim.swift */,
+				49829F6C6CC42842AF95A50B /* MacSettingsView.swift */,
+				9E29E1B45AFB806F41A3CC56 /* MacTagManagerView.swift */,
+				C24BF3E0062AD97E328E3656 /* MenuBarRootView.swift */,
+				D3C47B760E21FE8CAA4C5A26 /* StatusBarController.swift */,
+				73F3637664C65CB12E9DB531 /* TaggdMacApp.swift */,
+				36C4A45F9367D2BE235EB041 /* UpdaterViewModel.swift */,
+			);
+			path = TaggdMac;
+			sourceTree = "<group>";
+		};
+		B466C516A019BD03FF3E056F /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				38B1889170ACA0E8EF439F32 /* RobotoMono-Bold.ttf */,
+				D7BFE4E62AA4DE369B65287D /* RobotoMono-BoldItalic.ttf */,
+				0EB746AEC462F349DA51B6C8 /* RobotoMono-ExtraLight.ttf */,
+				41C23A9912A4FCA74B840B24 /* RobotoMono-ExtraLightItalic.ttf */,
+				17A37F85D5DAC59B58F2FC11 /* RobotoMono-Italic.ttf */,
+				DCF017FB8A54181F12BB6922 /* RobotoMono-Light.ttf */,
+				9826688E8E26F3D1144EED6C /* RobotoMono-LightItalic.ttf */,
+				D09D1587A9908B5119AA3597 /* RobotoMono-Medium.ttf */,
+				B6791E470ECBD2F51D2F58AC /* RobotoMono-MediumItalic.ttf */,
+				5EC5BBBD725F8C8828935EDB /* RobotoMono-Regular.ttf */,
+				786F44CE87ADE728FF67613D /* RobotoMono-SemiBold.ttf */,
+				56560B3185FE13A97317D644 /* RobotoMono-SemiBoldItalic.ttf */,
+				0BF994BB9614D10502A84828 /* RobotoMono-Thin.ttf */,
+				76F7EAAD3ADB8E166B857F5C /* RobotoMono-ThinItalic.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		E7396B42F394585AAE62FE3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC16ADAB4A63BA327E411DDB /* TaggdMac.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0F14A5D5DE7BA965E39C5B14 /* TaggdMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 18DA7C467960F321511239CA /* Build configuration list for PBXNativeTarget "TaggdMac" */;
+			buildPhases = (
+				8239A08EB4DDC2DFD1901782 /* Sources */,
+				B81ACBF36BFD21D033B78622 /* Resources */,
+				CA24F6CCB6718DD1E68142CC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TaggdMac;
+			packageProductDependencies = (
+				52A12C6860ACCD9E9E2B6336 /* Sparkle */,
+			);
+			productName = TaggdMac;
+			productReference = BC16ADAB4A63BA327E411DDB /* TaggdMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BD635F5BD5C3E3E1CDE96A37 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0F14A5D5DE7BA965E39C5B14 = {
+						DevelopmentTeam = UE57845B3R;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = AB3078829CED958A03776DEF /* Build configuration list for PBXProject "TaggdMac" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 4DFF41F88651FC7D9702957E;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F2D02F13EA386BF57B26273A /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0F14A5D5DE7BA965E39C5B14 /* TaggdMac */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B81ACBF36BFD21D033B78622 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6A842A7C08744815790239C /* Assets.xcassets in Resources */,
+				9CEF9A5D51B8CEB7E45051F8 /* RobotoMono-Bold.ttf in Resources */,
+				386A7FEC0C6D5D9BDF987658 /* RobotoMono-BoldItalic.ttf in Resources */,
+				4B5B8F114095F1F5BD24E535 /* RobotoMono-ExtraLight.ttf in Resources */,
+				522FA0A26F93C2EF9CD5622D /* RobotoMono-ExtraLightItalic.ttf in Resources */,
+				C9439BFA30C290F2AC13DA79 /* RobotoMono-Italic.ttf in Resources */,
+				9765C40B971CAC0CDECC16A4 /* RobotoMono-Light.ttf in Resources */,
+				226A7868A6A36904912D9F13 /* RobotoMono-LightItalic.ttf in Resources */,
+				9FBCEED3A3CFC9FE6A2297CB /* RobotoMono-Medium.ttf in Resources */,
+				6C2CC654C289A683E2D144B2 /* RobotoMono-MediumItalic.ttf in Resources */,
+				4E8FCC8127B68270C31F8814 /* RobotoMono-Regular.ttf in Resources */,
+				9C5857322F1B9DF8695155C6 /* RobotoMono-SemiBold.ttf in Resources */,
+				115D14E619A46363BA0F8130 /* RobotoMono-SemiBoldItalic.ttf in Resources */,
+				C63DD53B2FFD4569002AF6A2 /* AppIcon.icon in Resources */,
+				2B286270366011232E6A0222 /* RobotoMono-Thin.ttf in Resources */,
+				F0700BD12025C0B674718649 /* RobotoMono-ThinItalic.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8239A08EB4DDC2DFD1901782 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84D148FCDD8247E6C7748908 /* AppDelegate.swift in Sources */,
+				447C0CC54FFBA9F7985A5B17 /* AppModel.swift in Sources */,
+				CB1ECBD7A9AF056FD59E63A3 /* Components.swift in Sources */,
+				C3261047489EE5D8133F0CB7 /* FlowLayout.swift in Sources */,
+				928B9505A23DF7C87AB3C3EB /* LaunchAtLogin.swift in Sources */,
+				62E3F59D7F4B2EFBDC3FE4C5 /* MacLiveActivityShim.swift in Sources */,
+				9BF6D2CEBC031CE1CE924A64 /* MacSettingsView.swift in Sources */,
+				E54636294D3E80A78B4F941B /* MacTagManagerView.swift in Sources */,
+				F4307EFCAEF9F633A0BBFA3C /* MenuBarRootView.swift in Sources */,
+				4AB7B5EA5A37641F3E10F604 /* Models.swift in Sources */,
+				145376F15F2B839B5491CE98 /* StatusBarController.swift in Sources */,
+				E041177B77002A8B9B9DEE1D /* TagStore.swift in Sources */,
+				044FDAFBCBE0F52227DD421F /* TaggdMacApp.swift in Sources */,
+				8FD88D462F9AD600D246FFF1 /* Theme.swift in Sources */,
+				4CC0EDF03B738BC01F910833 /* TimeTaggerClient.swift in Sources */,
+				F8E1A88E802263F3D356BDBD /* TimeTracker.swift in Sources */,
+				5D23F40AA2BC8464897AF648 /* UpdaterViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5835FF53A4418BA036B77AD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UE57845B3R;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = TaggdMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toepper.rocks.TaggdMac;
+				PRODUCT_NAME = Tagged;
+				SDKROOT = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6B28A243D2E645E457A4E12C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9831A1517484C32E1522D7BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E6105E8889DE7DBE536AA571 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UE57845B3R;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = TaggdMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toepper.rocks.TaggdMac;
+				PRODUCT_NAME = Tagged;
+				SDKROOT = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		18DA7C467960F321511239CA /* Build configuration list for PBXNativeTarget "TaggdMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5835FF53A4418BA036B77AD5 /* Debug */,
+				E6105E8889DE7DBE536AA571 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AB3078829CED958A03776DEF /* Build configuration list for PBXProject "TaggdMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B28A243D2E645E457A4E12C /* Debug */,
+				9831A1517484C32E1522D7BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F2D02F13EA386BF57B26273A /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		52A12C6860ACCD9E9E2B6336 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F2D02F13EA386BF57B26273A /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = BD635F5BD5C3E3E1CDE96A37 /* Project object */;
+}

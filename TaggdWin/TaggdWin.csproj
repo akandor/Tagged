@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>TaggdWin</RootNamespace>
+    <AssemblyName>Tagged</AssemblyName>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.0</Version>
+    <Product>Tagged</Product>
+    <Company>Toepper.Rocks</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Velopack: GitHub-release auto-updates (the Windows analog of Sparkle). -->
+    <PackageReference Include="Velopack" Version="1.2.0" />
+  </ItemGroup>
+
+  <!-- Bundle the fonts and the tray icon as embedded resources. -->
+  <ItemGroup>
+    <None Remove="Fonts\*.ttf" />
+    <None Remove="Assets\tray.ico" />
+    <Resource Include="Fonts\*.ttf" />
+    <Resource Include="Assets\tray.ico" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,235 @@
+<Window x:Class="TaggdWin.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Tagged Settings" Width="480" Height="640" MinWidth="420" MinHeight="520"
+        Background="{StaticResource BackgroundBrush}"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="{StaticResource MonoFont}">
+
+    <Grid>
+        <!-- ===================== SETTINGS SCREEN ===================== -->
+        <DockPanel x:Name="SettingsPanel">
+            <Border DockPanel.Dock="Top" BorderBrush="{StaticResource StrokeBrush}" BorderThickness="0,0,0,1">
+                <Grid Margin="18,14">
+                    <TextBlock Text="Settings" VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}" />
+                </Grid>
+            </Border>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="18,16">
+                <StackPanel>
+
+                    <!-- Server -->
+                    <TextBlock Text="SERVER" Style="{StaticResource SectionHeader}" />
+                    <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,18">
+                        <StackPanel>
+                            <TextBlock Text="Server URL" Style="{StaticResource FieldLabel}" />
+                            <TextBox x:Name="ServerUrlBox" Style="{StaticResource FieldTextBox}" Margin="0,4,0,12"
+                                     TextChanged="OnServerUrlChanged" />
+
+                            <TextBlock Text="API Token" Style="{StaticResource FieldLabel}" />
+                            <Grid Margin="0,4,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <PasswordBox x:Name="TokenPasswordBox" Height="34" Padding="8,0"
+                                                 VerticalContentAlignment="Center"
+                                                 Background="{StaticResource SurfaceRaisedBrush}"
+                                                 Foreground="{StaticResource TextPrimaryBrush}"
+                                                 BorderBrush="{StaticResource StrokeBrush}" BorderThickness="1"
+                                                 PasswordChanged="OnTokenPasswordChanged" />
+                                    <TextBox x:Name="TokenTextBox" Style="{StaticResource FieldTextBox}"
+                                             Visibility="Collapsed" TextChanged="OnTokenTextChanged" />
+                                </Grid>
+                                <Button x:Name="RevealButton" Grid.Column="1" Style="{StaticResource IconButton}"
+                                        Margin="8,0,0,0" Click="OnToggleReveal">
+                                    <TextBlock x:Name="RevealGlyph" Text="&#xE7B3;" FontFamily="Segoe MDL2 Assets"
+                                               FontSize="14" Foreground="{StaticResource TextSecondaryBrush}" />
+                                </Button>
+                            </Grid>
+
+                            <Grid>
+                                <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
+                                        Click="OnTestConnection">
+                                    <TextBlock Text="Test Connection" FontSize="14"
+                                               Foreground="{StaticResource AccentBrush}" />
+                                </Button>
+                                <TextBlock x:Name="TestStatus" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                           FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                            </Grid>
+                            <TextBlock Text="Sync with a self-hosted TimeTagger backend, e.g. https://timetagger.example.com. Create an API token under Account → API token."
+                                       TextWrapping="Wrap" Margin="0,10,0,0" FontSize="11"
+                                       Foreground="{StaticResource TextTertiaryBrush}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Timer -->
+                    <TextBlock Text="TIMER" Style="{StaticResource SectionHeader}" />
+                    <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,18">
+                        <StackPanel>
+                            <Grid Margin="0,4">
+                                <TextBlock Text="Confirm Before Stop" VerticalAlignment="Center" FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                                <ToggleButton x:Name="ConfirmToggle" HorizontalAlignment="Right"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="OnConfirmChanged" Unchecked="OnConfirmChanged" />
+                            </Grid>
+                            <Grid Margin="0,4">
+                                <TextBlock Text="Launch at Login" VerticalAlignment="Center" FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                                <ToggleButton x:Name="LaunchToggle" HorizontalAlignment="Right"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="OnLaunchChanged" Unchecked="OnLaunchChanged" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Tags -->
+                    <TextBlock Text="TAGS" Style="{StaticResource SectionHeader}" />
+                    <Border Style="{StaticResource Card}" Padding="4" Margin="0,0,0,18">
+                        <Button Style="{StaticResource IconButton}" Click="OnManageTags" Padding="10">
+                            <Grid>
+                                <TextBlock Text="Manage Tags" VerticalAlignment="Center" FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock x:Name="TagsCountText" VerticalAlignment="Center" FontSize="12"
+                                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,8,0" />
+                                    <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                               VerticalAlignment="Center" Foreground="{StaticResource TextTertiaryBrush}" />
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                    </Border>
+
+                    <!-- Updates -->
+                    <TextBlock Text="UPDATES" Style="{StaticResource SectionHeader}" />
+                    <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,18">
+                        <StackPanel>
+                            <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
+                                    Click="OnCheckForUpdates" Margin="0,0,0,8">
+                                <TextBlock x:Name="CheckUpdatesText" Text="Check for Updates…" FontSize="14"
+                                           Foreground="{StaticResource AccentBrush}" />
+                            </Button>
+                            <Grid Margin="0,4">
+                                <TextBlock Text="Automatically Check for Updates" VerticalAlignment="Center" FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                                <ToggleButton x:Name="AutoUpdateToggle" HorizontalAlignment="Right"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Checked="OnAutoUpdateChanged" Unchecked="OnAutoUpdateChanged" />
+                            </Grid>
+                            <TextBlock Text="Updates are delivered from GitHub Releases, verified with a signature. Not distributed through any app store."
+                                       TextWrapping="Wrap" Margin="0,8,0,0" FontSize="11"
+                                       Foreground="{StaticResource TextTertiaryBrush}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- About -->
+                    <TextBlock Text="ABOUT" Style="{StaticResource SectionHeader}" />
+                    <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,8">
+                        <StackPanel>
+                            <Grid Margin="0,4">
+                                <TextBlock Text="Version" VerticalAlignment="Center" FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                                <TextBlock x:Name="VersionText" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                           FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                            </Grid>
+                            <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
+                                    Click="OnOpenGitHub" Margin="0,4">
+                                <TextBlock Text="GitHub" FontSize="14" Foreground="{StaticResource AccentBrush}" />
+                            </Button>
+                            <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
+                                    Click="OnBuyCoffee" Margin="0,4">
+                                <TextBlock Text="☕  Buy me a coffee" FontSize="14"
+                                           Foreground="{StaticResource AccentBrush}" />
+                            </Button>
+                            <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
+                                    Click="OnQuit" Margin="0,4">
+                                <TextBlock Text="Quit Tagged" FontSize="14" Foreground="{StaticResource DangerBrush}" />
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock x:Name="CopyrightText" HorizontalAlignment="Center" Margin="0,10" FontSize="11"
+                               Foreground="{StaticResource TextTertiaryBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+
+        <!-- ===================== TAGS SCREEN ===================== -->
+        <DockPanel x:Name="TagsPanel" Visibility="Collapsed" Background="{StaticResource BackgroundBrush}">
+            <Border DockPanel.Dock="Top" BorderBrush="{StaticResource StrokeBrush}" BorderThickness="0,0,0,1">
+                <Grid Margin="18,14">
+                    <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}" Click="OnBackFromTags">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                       VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}" />
+                            <TextBlock Text="Settings" Margin="4,0,0,0" FontSize="14"
+                                       Foreground="{StaticResource AccentBrush}" />
+                        </StackPanel>
+                    </Button>
+                    <TextBlock Text="Tags" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"
+                               FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                </Grid>
+            </Border>
+
+            <Border DockPanel.Dock="Top" Style="{StaticResource Card}" Margin="18,16,18,8" Height="46">
+                <Grid Margin="14,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <TextBox x:Name="NewTagBox" Style="{StaticResource DarkTextBox}" FontSize="14"
+                                 KeyDown="OnNewTagKeyDown" />
+                        <TextBlock Text="Add a tag" IsHitTestVisible="False" VerticalAlignment="Center"
+                                   Margin="3,0,0,0" FontSize="14" Foreground="{StaticResource TextTertiaryBrush}"
+                                   Visibility="{Binding Text, ElementName=NewTagBox, Converter={StaticResource EmptyToVis}}" />
+                    </Grid>
+                    <Button Grid.Column="1" Style="{StaticResource IconButton}" Click="OnAddNewTag">
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                   Foreground="{StaticResource AccentBrush}" />
+                    </Button>
+                </Grid>
+            </Border>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="18,0,18,16">
+                <ItemsControl x:Name="TagsList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,8" Height="44">
+                                <Grid Margin="12,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Style="{StaticResource DarkTextBox}" FontSize="14"
+                                             Text="{Binding Name, Mode=OneWay}"
+                                             LostFocus="OnTagRenamed" />
+                                    <Button Grid.Column="1" Style="{StaticResource IconButton}" Click="OnMoveTagUp"
+                                            ToolTip="Move up">
+                                        <TextBlock Text="&#xE70E;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                                    </Button>
+                                    <Button Grid.Column="2" Style="{StaticResource IconButton}" Click="OnMoveTagDown"
+                                            ToolTip="Move down">
+                                        <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                                   Foreground="{StaticResource TextSecondaryBrush}" />
+                                    </Button>
+                                    <Button Grid.Column="3" Style="{StaticResource IconButton}" Click="OnDeleteTag"
+                                            ToolTip="Delete" Margin="4,0,0,0">
+                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                                   Foreground="{StaticResource DangerBrush}" />
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</Window>
