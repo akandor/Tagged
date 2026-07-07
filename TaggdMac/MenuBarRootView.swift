@@ -23,6 +23,8 @@ struct MenuBarRootView: View {
     @State private var toast: ToastKind?
     @State private var toastTask: Task<Void, Never>?
     @AppStorage("confirmBeforeStop") private var confirmBeforeStop = false
+    @AppStorage("serverURL") private var serverURL = ""
+    @Environment(\.openURL) private var openURL
     @FocusState private var descriptionFocused: Bool
 
     var body: some View {
@@ -90,6 +92,20 @@ struct MenuBarRootView: View {
                 .foregroundStyle(Theme.textSecondary)
             Spacer()
             HStack(spacing: 14) {
+                if let url = serverWebURL {
+                    Button {
+                        descriptionFocused = false
+                        openURL(url)
+                    } label: {
+                        Image(systemName: "cloud")
+                            .font(.system(size: 15, weight: .regular))
+                            .foregroundStyle(Theme.textPrimary)
+                    }
+                    .buttonStyle(.plain)
+                    .help("Open server in browser")
+                    .accessibilityLabel("Open server in browser")
+                }
+
                 Button {
                     descriptionFocused = false
                     onOpenSettings()
@@ -113,6 +129,16 @@ struct MenuBarRootView: View {
                 .accessibilityLabel("Quit Tagged")
             }
         }
+    }
+
+    /// The configured server address as an openable web URL, or `nil` when no
+    /// server is set. Assumes `https` when the stored value omits a scheme.
+    private var serverWebURL: URL? {
+        let trimmed = serverURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        let normalized = trimmed.contains("://") ? trimmed : "https://\(trimmed)"
+        guard let url = URL(string: normalized), url.host != nil else { return nil }
+        return url
     }
 
     // MARK: - Description

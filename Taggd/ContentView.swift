@@ -15,6 +15,8 @@ struct ContentView: View {
     @State private var toast: ToastKind?
     @State private var toastTask: Task<Void, Never>?
     @AppStorage("confirmBeforeStop") private var confirmBeforeStop = false
+    @AppStorage("serverURL") private var serverURL = ""
+    @Environment(\.openURL) private var openURL
     @FocusState private var descriptionFocused: Bool
 
     var body: some View {
@@ -43,6 +45,19 @@ struct ContentView: View {
             }
             .navigationTitle("")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    if let url = serverWebURL {
+                        Button {
+                            descriptionFocused = false
+                            openURL(url)
+                        } label: {
+                            Image(systemName: "cloud")
+                                .font(.system(size: 17, weight: .semibold))
+                        }
+                        .tint(Theme.textPrimary)
+                        .accessibilityLabel("Open server in browser")
+                    }
+                }
                 ToolbarItem(placement: .principal) {
                     Text("TAGGED")
                         .font(.mono(15, .bold))
@@ -99,6 +114,16 @@ struct ContentView: View {
             case .syncing, .disabled: break
             }
         }
+    }
+
+    /// The configured server address as an openable web URL, or `nil` when no
+    /// server is set. Assumes `https` when the stored value omits a scheme.
+    private var serverWebURL: URL? {
+        let trimmed = serverURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        let normalized = trimmed.contains("://") ? trimmed : "https://\(trimmed)"
+        guard let url = URL(string: normalized), url.host != nil else { return nil }
+        return url
     }
 
     private func presentToast(_ kind: ToastKind) {

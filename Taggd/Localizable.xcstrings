@@ -267,6 +267,9 @@
         }
       }
     },
+    "Open server in browser" : {
+
+    },
     "Paste your TimeTagger API token" : {
       "localizations" : {
         "de" : {
