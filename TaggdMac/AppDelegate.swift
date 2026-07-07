@@ -28,6 +28,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
     }
 
+    // MARK: - Quit confirmation
+
+    /// Every quit path (the popover power button, the Settings "Quit" button,
+    /// and ⌘Q) routes through here, so a single confirmation covers them all.
+    /// Sparkle's install-and-relaunch also terminates the app; that case is
+    /// waved through so updates aren't interrupted.
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if updater.isRelaunchingForUpdate { return .terminateNow }
+
+        statusController?.closePopover()
+
+        let alert = NSAlert()
+        alert.messageText = "Quit Tagged?"
+        alert.informativeText = AppModel.shared.tracker.phase == .idle
+            ? "Are you sure you want to quit?"
+            : "A timer is currently running. Are you sure you want to quit?"
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "Quit")
+        alert.addButton(withTitle: "Cancel")
+
+        // The app can be a status-bar accessory with no key window, so bring the
+        // alert to the front explicitly.
+        NSApp.activate(ignoringOtherApps: true)
+
+        return alert.runModal() == .alertFirstButtonReturn ? .terminateNow : .terminateCancel
+    }
+
     // MARK: - Settings window
 
     /// Shows the Settings window, promoting the app to a regular (Dock-visible)
