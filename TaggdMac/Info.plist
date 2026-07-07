@@ -29,7 +29,7 @@
 	<key>SUFeedURL</key>
 	<string>https://raw.githubusercontent.com/akandor/Tagged/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>
-	<string>REPLACE_WITH_YOUR_SPARKLE_ED_PUBLIC_KEY</string>
+	<string>MvtuCUMHoS4RNuoyaqIxBezAk1TtgPThJGTHsDFBnzw=</string>
 	<key>SUScheduledCheckInterval</key>
 	<integer>86400</integer>
 </dict>
