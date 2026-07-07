@@ -101,6 +101,33 @@
         </Setter>
     </Style>
 
+    <!-- ==== Buy Me a Coffee badge button (brand yellow) ==== -->
+    <Style x:Key="CoffeeButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="#FF0D0C22" />
+        <Setter Property="Height" Value="44" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" CornerRadius="12" Background="#FFFFDD00" Padding="18,0">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Opacity" Value="0.9" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Opacity" Value="0.8" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- ==== Bare icon button ==== -->
     <Style x:Key="IconButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
@@ -111,7 +138,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="Transparent" Padding="4">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -153,6 +181,24 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Height" Value="34" />
         <Setter Property="Padding" Value="8,0" />
+    </Style>
+
+    <!-- ==== Row leading icon (SF Symbol geometry, accent-tinted) ==== -->
+    <Style x:Key="RowIcon" TargetType="Path">
+        <Setter Property="Fill" Value="{StaticResource AccentBrush}" />
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="Width" Value="18" />
+        <Setter Property="Height" Value="18" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <!-- ==== Inset hairline separator between rows in a card ==== -->
+    <Style x:Key="RowSeparator" TargetType="Border">
+        <Setter Property="Height" Value="1" />
+        <Setter Property="Background" Value="{StaticResource StrokeBrush}" />
+        <Setter Property="Margin" Value="0,10" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
 
     <!-- ==== Toggle switch (ToggleButton) ==== -->

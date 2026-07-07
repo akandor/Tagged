@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +29,12 @@ namespace TaggdWin.Views
         /// <summary>Positions the popup at the bottom-right of the work area (near the tray) and shows it.</summary>
         public void ShowNearTray()
         {
+            // Show the "open server" button only when a server is configured;
+            // re-evaluated on each open so it reflects the latest settings.
+            CloudButton.Visibility = string.IsNullOrWhiteSpace(SettingsStore.ServerUrl)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
             Show();
             var wa = SystemParameters.WorkArea;
             Left = wa.Right - Width - 4;
@@ -37,6 +44,19 @@ namespace TaggdWin.Views
         }
 
         // ---- Header ----
+
+        private void OnOpenServer(object sender, RoutedEventArgs e)
+        {
+            var raw = (SettingsStore.ServerUrl ?? "").Trim();
+            if (raw.Length == 0) return;
+            if (!raw.Contains("://")) raw = "https://" + raw;
+            if (Uri.TryCreate(raw, UriKind.Absolute, out var uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            {
+                try { Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true }); }
+                catch { /* ignore launch failures */ }
+            }
+        }
 
         private void OnOpenSettings(object sender, RoutedEventArgs e) => ((App)Application.Current).ShowSettings();
 

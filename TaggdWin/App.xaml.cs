@@ -92,6 +92,17 @@ namespace TaggdWin
 
         public void QuitApp()
         {
+            // Every quit path (tray menu, popup power button, Settings "Quit")
+            // routes through here, so one confirmation covers them all. Velopack
+            // relaunches by exiting the process directly, so update installs
+            // never reach this prompt.
+            var message = Tracker.IsIdle
+                ? "Are you sure you want to quit?"
+                : "A timer is currently running. Are you sure you want to quit?";
+            if (MessageBox.Show(message, "Quit Tagged?",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                return;
+
             if (_notifyIcon != null)
             {
                 _notifyIcon.Visible = false;

@@ -20,6 +20,11 @@
                                FontFamily="{StaticResource MonoFont}" FontSize="14" FontWeight="Bold"
                                Foreground="{StaticResource TextSecondaryBrush}" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="CloudButton" Style="{StaticResource IconButton}" Click="OnOpenServer"
+                                ToolTip="Open server in browser" Visibility="Collapsed" Margin="0,0,8,0">
+                            <Path Data="{StaticResource Icon.Cloud}" Fill="{StaticResource TextPrimaryBrush}"
+                                  Stretch="Uniform" Width="17" Height="17" />
+                        </Button>
                         <Button Style="{StaticResource IconButton}" Click="OnOpenSettings" ToolTip="Settings">
                             <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="15"
                                        Foreground="{StaticResource TextPrimaryBrush}" />

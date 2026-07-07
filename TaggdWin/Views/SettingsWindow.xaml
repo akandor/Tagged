@@ -23,12 +23,20 @@
                     <TextBlock Text="SERVER" Style="{StaticResource SectionHeader}" />
                     <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,18">
                         <StackPanel>
-                            <TextBlock Text="Server URL" Style="{StaticResource FieldLabel}" />
-                            <TextBox x:Name="ServerUrlBox" Style="{StaticResource FieldTextBox}" Margin="0,4,0,12"
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.ServerRack}" Margin="0,0,8,0" />
+                                <TextBlock Text="Server URL" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <TextBox x:Name="ServerUrlBox" Style="{StaticResource FieldTextBox}"
                                      TextChanged="OnServerUrlChanged" />
 
-                            <TextBlock Text="API Token" Style="{StaticResource FieldLabel}" />
-                            <Grid Margin="0,4,0,12">
+                            <Border Style="{StaticResource RowSeparator}" />
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.Key}" Margin="0,0,8,0" />
+                                <TextBlock Text="API Token" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -50,11 +58,16 @@
                                 </Button>
                             </Grid>
 
+                            <Border Style="{StaticResource RowSeparator}" />
+
                             <Grid>
                                 <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
                                         Click="OnTestConnection">
-                                    <TextBlock Text="Test Connection" FontSize="14"
-                                               Foreground="{StaticResource AccentBrush}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.Antenna}" Margin="0,0,8,0" />
+                                        <TextBlock Text="Test Connection" FontSize="14" VerticalAlignment="Center"
+                                                   Foreground="{StaticResource AccentBrush}" />
+                                    </StackPanel>
                                 </Button>
                                 <TextBlock x:Name="TestStatus" HorizontalAlignment="Right" VerticalAlignment="Center"
                                            FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
@@ -69,17 +82,32 @@
                     <TextBlock Text="TIMER" Style="{StaticResource SectionHeader}" />
                     <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,18">
                         <StackPanel>
-                            <Grid Margin="0,4">
-                                <TextBlock Text="Confirm Before Stop" VerticalAlignment="Center" FontSize="14"
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Style="{StaticResource RowIcon}" Data="{StaticResource Icon.HandRaised}" Margin="0,0,12,0" />
+                                <TextBlock Grid.Column="1" Text="Confirm Before Stop" VerticalAlignment="Center" FontSize="14"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
-                                <ToggleButton x:Name="ConfirmToggle" HorizontalAlignment="Right"
+                                <ToggleButton Grid.Column="2" x:Name="ConfirmToggle"
                                               Style="{StaticResource ToggleSwitch}"
                                               Checked="OnConfirmChanged" Unchecked="OnConfirmChanged" />
                             </Grid>
-                            <Grid Margin="0,4">
-                                <TextBlock Text="Launch at Login" VerticalAlignment="Center" FontSize="14"
+
+                            <Border Style="{StaticResource RowSeparator}" />
+
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Style="{StaticResource RowIcon}" Data="{StaticResource Icon.Power}" Margin="0,0,12,0" />
+                                <TextBlock Grid.Column="1" Text="Launch at Login" VerticalAlignment="Center" FontSize="14"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
-                                <ToggleButton x:Name="LaunchToggle" HorizontalAlignment="Right"
+                                <ToggleButton Grid.Column="2" x:Name="LaunchToggle"
                                               Style="{StaticResource ToggleSwitch}"
                                               Checked="OnLaunchChanged" Unchecked="OnLaunchChanged" />
                             </Grid>
@@ -89,10 +117,14 @@
                     <!-- Tags -->
                     <TextBlock Text="TAGS" Style="{StaticResource SectionHeader}" />
                     <Border Style="{StaticResource Card}" Padding="4" Margin="0,0,0,18">
-                        <Button Style="{StaticResource IconButton}" Click="OnManageTags" Padding="10">
+                        <Button Style="{StaticResource IconButton}" Click="OnManageTags" Padding="10"
+                                HorizontalContentAlignment="Stretch">
                             <Grid>
-                                <TextBlock Text="Manage Tags" VerticalAlignment="Center" FontSize="14"
-                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.Tag}" Margin="0,0,12,0" />
+                                    <TextBlock Text="Manage Tags" VerticalAlignment="Center" FontSize="14"
+                                               Foreground="{StaticResource TextPrimaryBrush}" />
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <TextBlock x:Name="TagsCountText" VerticalAlignment="Center" FontSize="12"
                                                Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,8,0" />
@@ -108,20 +140,48 @@
                     <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,18">
                         <StackPanel>
                             <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
-                                    Click="OnCheckForUpdates" Margin="0,0,0,8">
-                                <TextBlock x:Name="CheckUpdatesText" Text="Check for Updates…" FontSize="14"
-                                           Foreground="{StaticResource AccentBrush}" />
+                                    Click="OnCheckForUpdates">
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.CheckUpdates}" Margin="0,0,8,0" />
+                                    <TextBlock x:Name="CheckUpdatesText" Text="Check for Updates…" FontSize="14"
+                                               VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}" />
+                                </StackPanel>
                             </Button>
-                            <Grid Margin="0,4">
-                                <TextBlock Text="Automatically Check for Updates" VerticalAlignment="Center" FontSize="14"
+
+                            <Border Style="{StaticResource RowSeparator}" />
+
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="0" Style="{StaticResource RowIcon}" Data="{StaticResource Icon.AutoUpdate}" Margin="0,0,12,0" />
+                                <TextBlock Grid.Column="1" Text="Automatically Check for Updates" VerticalAlignment="Center" FontSize="14"
                                            Foreground="{StaticResource TextPrimaryBrush}" />
-                                <ToggleButton x:Name="AutoUpdateToggle" HorizontalAlignment="Right"
+                                <ToggleButton Grid.Column="2" x:Name="AutoUpdateToggle"
                                               Style="{StaticResource ToggleSwitch}"
                                               Checked="OnAutoUpdateChanged" Unchecked="OnAutoUpdateChanged" />
                             </Grid>
                             <TextBlock Text="Updates are delivered from GitHub Releases, verified with a signature. Not distributed through any app store."
-                                       TextWrapping="Wrap" Margin="0,8,0,0" FontSize="11"
+                                       TextWrapping="Wrap" Margin="0,10,0,0" FontSize="11"
                                        Foreground="{StaticResource TextTertiaryBrush}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Support -->
+                    <TextBlock Text="SUPPORT" Style="{StaticResource SectionHeader}" />
+                    <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,18">
+                        <StackPanel>
+                            <TextBlock Text="Enjoying Tagged? Fuel the next update."
+                                       HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"
+                                       FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,12" />
+                            <Button Click="OnBuyCoffee" HorizontalAlignment="Center" Style="{StaticResource CoffeeButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="☕" FontSize="18" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <TextBlock Text="Buy me a coffee" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                     </Border>
 
@@ -129,24 +189,37 @@
                     <TextBlock Text="ABOUT" Style="{StaticResource SectionHeader}" />
                     <Border Style="{StaticResource Card}" Padding="14" Margin="0,0,0,8">
                         <StackPanel>
-                            <Grid Margin="0,4">
-                                <TextBlock Text="Version" VerticalAlignment="Center" FontSize="14"
-                                           Foreground="{StaticResource TextPrimaryBrush}" />
+                            <Grid Margin="0,2">
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.InfoCircle}" Margin="0,0,12,0" />
+                                    <TextBlock Text="Version" VerticalAlignment="Center" FontSize="14"
+                                               Foreground="{StaticResource TextPrimaryBrush}" />
+                                </StackPanel>
                                 <TextBlock x:Name="VersionText" HorizontalAlignment="Right" VerticalAlignment="Center"
                                            FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
                             </Grid>
+
+                            <Border Style="{StaticResource RowSeparator}" />
+
                             <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
-                                    Click="OnOpenGitHub" Margin="0,4">
-                                <TextBlock Text="GitHub" FontSize="14" Foreground="{StaticResource AccentBrush}" />
+                                    Click="OnOpenGitHub">
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.GitHub}" Margin="0,0,12,0" />
+                                    <TextBlock Text="GitHub" FontSize="14" VerticalAlignment="Center"
+                                               Foreground="{StaticResource AccentBrush}" />
+                                </StackPanel>
                             </Button>
+
+                            <Border Style="{StaticResource RowSeparator}" />
+
                             <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
-                                    Click="OnBuyCoffee" Margin="0,4">
-                                <TextBlock Text="☕  Buy me a coffee" FontSize="14"
-                                           Foreground="{StaticResource AccentBrush}" />
-                            </Button>
-                            <Button HorizontalAlignment="Left" Style="{StaticResource IconButton}"
-                                    Click="OnQuit" Margin="0,4">
-                                <TextBlock Text="Quit Tagged" FontSize="14" Foreground="{StaticResource DangerBrush}" />
+                                    Click="OnQuit">
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Style="{StaticResource RowIcon}" Data="{StaticResource Icon.Power}"
+                                          Fill="{StaticResource DangerBrush}" Margin="0,0,12,0" />
+                                    <TextBlock Text="Quit Tagged" FontSize="14" VerticalAlignment="Center"
+                                               Foreground="{StaticResource DangerBrush}" />
+                                </StackPanel>
                             </Button>
                         </StackPanel>
                     </Border>
