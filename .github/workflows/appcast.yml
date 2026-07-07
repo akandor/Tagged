@@ -1,0 +1,103 @@
+name: Publish Sparkle appcast
+
+# Generates and signs the macOS Sparkle appcast whenever a GitHub Release is
+# published, then commits appcast.xml back to main (the SUFeedURL the app polls
+# is https://raw.githubusercontent.com/akandor/Tagged/main/appcast.xml).
+#
+# Requires one repository secret:
+#   SPARKLE_PRIVATE_KEY  — the base64 EdDSA private key exported with
+#                          `generate_keys -x`, matching SUPublicEDKey in the app.
+#
+# This repo also hosts the Windows (Velopack) releases; those carry no macOS
+# .app archive, so the job detects that and exits without touching the appcast.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to (re)generate the appcast for
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: appcast
+  cancel-in-progress: false
+
+jobs:
+  appcast:
+    runs-on: macos-latest
+    env:
+      SPARKLE_VERSION: "2.6.4"
+    steps:
+      - name: Resolve release tag
+        id: meta
+        run: echo "tag=${{ github.event.release.tag_name || inputs.tag }}" >> "$GITHUB_OUTPUT"
+
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Fetch Sparkle tools
+        run: |
+          set -euo pipefail
+          curl -fsSL -o sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz"
+          mkdir sparkle && tar -xf sparkle.tar.xz -C sparkle
+          test -x sparkle/bin/generate_appcast
+
+      - name: Download release archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          gh release download "$TAG" -R "${{ github.repository }}" -p '*.zip' -D dist --clobber || true
+          # Keep only archives that actually contain a macOS .app bundle, so
+          # Windows/Velopack releases published to this repo are ignored.
+          for z in dist/*.zip; do
+            [ -e "$z" ] || continue
+            unzip -l "$z" | grep -q '\.app/' || rm -f "$z"
+          done
+          if ! ls dist/*.zip >/dev/null 2>&1; then
+            echo "No macOS .app archive in release $TAG; nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+        id: download
+
+      - name: Generate signed appcast
+        if: steps.download.outputs.skip != 'true'
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+          # Seed with the committed appcast so previous entries (and their own
+          # per-release download URLs) are preserved.
+          [ -f appcast.xml ] && cp appcast.xml dist/appcast.xml || true
+          printf '%s' "$SPARKLE_PRIVATE_KEY" | sparkle/bin/generate_appcast \
+            --ed-key-file - \
+            --download-url-prefix "https://github.com/${{ github.repository }}/releases/download/${TAG}/" \
+            dist
+          cp dist/appcast.xml appcast.xml
+
+      - name: Commit appcast
+        if: steps.download.outputs.skip != 'true'
+        env:
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- appcast.xml; then
+            echo "Appcast already up to date."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add appcast.xml
+          git commit -m "Update Sparkle appcast for ${TAG}"
+          git push origin main
