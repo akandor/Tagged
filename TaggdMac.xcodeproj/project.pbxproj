@@ -66,7 +66,7 @@
 		AD087CB7D2C449812A4D7AE0 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		AD63CCC3513D7EACCB140A73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6791E470ECBD2F51D2F58AC /* RobotoMono-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-MediumItalic.ttf"; sourceTree = "<group>"; };
-		BC16ADAB4A63BA327E411DDB /* TaggdMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = TaggdMac.app; path = Tagged.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC16ADAB4A63BA327E411DDB /* Tagged.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tagged.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C24BF3E0062AD97E328E3656 /* MenuBarRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarRootView.swift; sourceTree = "<group>"; };
 		C3F04FE6E40691D833A444AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C63DD53A2FFD4569002AF6A2 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
@@ -159,7 +159,7 @@
 		E7396B42F394585AAE62FE3D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BC16ADAB4A63BA327E411DDB /* TaggdMac.app */,
+				BC16ADAB4A63BA327E411DDB /* Tagged.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,7 +184,7 @@
 				52A12C6860ACCD9E9E2B6336 /* Sparkle */,
 			);
 			productName = TaggdMac;
-			productReference = BC16ADAB4A63BA327E411DDB /* TaggdMac.app */;
+			productReference = BC16ADAB4A63BA327E411DDB /* Tagged.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -284,7 +284,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = UE57845B3R;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = TaggdMac/Info.plist;
@@ -430,7 +430,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = UE57845B3R;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = TaggdMac/Info.plist;
