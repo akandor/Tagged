@@ -8,7 +8,7 @@
             <sparkle:version>1</sparkle:version>
             <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/akandor/Tagged/releases/download/1.0-b1/Tagged-1.0-b1.zip" length="4100935" type="application/octet-stream" sparkle:edSignature="sobCmbjgtiHQXousmI+wj3PRfJ80Ymf9Jd0kqSv7K5IMCocfGFk3beYSPYC+qFE0oNz9ecaa2RjXbSJAasDpDQ=="/>
+            <enclosure url="https://github.com/akandor/Tagged/releases/download/1.0-b22/Tagged-1.0-b22.zip" length="4100947" type="application/octet-stream" sparkle:edSignature="ZgeEOT56aDlTS1P+eDdJfXfp8cSwsbSyMjKNBtkURd5JTSJIx0SZHZB+Ua8tOKfoHv3XV3UAsGZL085RjVeCBg=="/>
         </item>
     </channel>
 </rss>
