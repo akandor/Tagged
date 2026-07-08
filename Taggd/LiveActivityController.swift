@@ -51,12 +51,15 @@ final class LiveActivityController {
         Task { await activity.update(ActivityContent(state: state, staleDate: nil)) }
     }
 
-    /// Ends the current activity immediately.
+    /// Ends the current activity immediately. If we don't hold a reference (e.g. the
+    /// app was relaunched after being quit), dismiss any system-tracked activity so a
+    /// Stop from the Lock Screen still clears it.
     func end() {
-        guard let activity else { return }
-        self.activity = nil
-        Task {
-            await activity.end(activity.content, dismissalPolicy: .immediate)
+        if let activity {
+            self.activity = nil
+            Task { await activity.end(activity.content, dismissalPolicy: .immediate) }
+        } else {
+            endAllExistingActivities()
         }
     }
 

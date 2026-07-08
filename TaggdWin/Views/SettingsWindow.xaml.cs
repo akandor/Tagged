@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using TaggdWin.Models;
 using TaggdWin.Services;
 
@@ -94,6 +95,7 @@ namespace TaggdWin.Views
             if (url.Length == 0 || token.Length == 0) return;
 
             TestStatus.Text = "Testing…";
+            TestStatus.Foreground = (Brush)FindResource("TextSecondaryBrush");
             var result = await new TimeTaggerClient(url, token).TestConnectionAsync();
             TestStatus.Text = result.Kind switch
             {
@@ -102,6 +104,9 @@ namespace TaggdWin.Views
                 TimeTaggerClient.ResultKind.BadUrl => "✗ Invalid URL",
                 _ => "✗ " + result.Message
             };
+            TestStatus.Foreground = result.Kind == TimeTaggerClient.ResultKind.Success
+                ? new SolidColorBrush(Color.FromRgb(0x3F, 0xB9, 0x50)) // green, matches the "Saved" toast
+                : (Brush)FindResource("DangerBrush");
         }
 
         // ---- Timer ----

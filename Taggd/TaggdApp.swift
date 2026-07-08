@@ -8,6 +8,7 @@ import SwiftUI
 @main
 struct TaggdApp: App {
     @State private var tagStore = TagStore()
+    @State private var offlineStore = OfflineStore.shared
 
     init() {
         FontRegistrar.registerBundledFonts()
@@ -17,6 +18,7 @@ struct TaggdApp: App {
         WindowGroup {
             RootView()
                 .environment(tagStore)
+                .environment(offlineStore)
         }
     }
 }

@@ -1,0 +1,59 @@
+
+%lld
+%1$lld horas %2$lld minutos %3$lld segundos
+Acerca de
+Añadir
+Añadir una etiqueta
+Token de API
+Invítame a un café
+Cancelar
+Confirmar antes de detener
+Conectado
+Crea una etiqueta personalizada para esta sesión.
+Hecho
+¿Te gusta Tagged? Ayuda a financiar la próxima actualización.
+Introduce la dirección de tu servidor
+Comentarios
+GitHub
+Retroalimentación háptica
+Token no válido
+URL no válida
+Seguir adelante
+Mantener la pantalla activa
+Gestionar etiquetas
+Nueva etiqueta
+Nueva etiqueta…
+Aún no hay etiquetas: añade una para clasificar esta sesión.
+Aún no hay etiquetas. Añade una arriba.
+No se ha guardado
+Abrir el servidor en el navegador
+Pega tu token de la API de TimeTagger
+Pausar
+Pausar sesión
+Valora esta aplicación
+Eliminar etiqueta %@
+Reanudar
+Reanudar sesión
+Reintentar
+Guardado
+Servidor
+URL del servidor
+Ajustes
+Compartir esta aplicación
+Iniciar
+Detener
+Detener sesión
+¿Deseas detener esta sesión?
+Ayuda
+Sincroniza con un backend de TimeTagger autohospedado, p. ej., https://timetagger.example.com. Crea un token de API en TimeTagger en Cuenta → Token de API.
+Nombre de la etiqueta
+ETIQUETADO
+Etiquetas
+ETIQUETAS
+Toca un nombre para cambiarlo · desliza para eliminar · usa Editar para reordenarlas.
+Probar conexión
+Se guardará la hora actual y se reiniciará el temporizador.
+Temporizador
+Versión
+¿En qué estás trabajando?
+Tus etiquetas

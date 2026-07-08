@@ -1,0 +1,59 @@
+
+%lld
+%1$lld ore %2$lld minuti %3$lld secondi
+Informazioni
+Aggiungi
+Aggiungi un tag
+Token API
+Offrimi un caffè
+Annulla
+Conferma prima di interrompere
+Connesso
+Crea un tag personalizzato per questa sessione.
+Fatto
+Ti piace Tagged? Contribuisci al prossimo aggiornamento.
+Inserisci l’indirizzo del tuo server
+Feedback
+GitHub
+Feedback tattile
+Token non valido
+URL non valido
+Continua
+Mantieni lo schermo attivo
+Gestisci tag
+Nuovo tag
+Nuovo tag…
+Nessun tag ancora — aggiungine uno per classificare questa sessione.
+Nessun tag ancora. Aggiungine uno qui sopra.
+Non salvato
+Apri il server nel browser
+Incolla il tuo token API di TimeTagger
+Metti in pausa
+Metti in pausa la sessione
+Valuta questa app
+Rimuovi tag %@
+Riprendi
+Riprendi la sessione
+Riprova
+Salvato
+Server
+URL del server
+Impostazioni
+Condividi questa app
+Avvia
+Interrompi
+Interrompi la sessione
+Interrompere questa sessione?
+Assistenza
+Sincronizza con un backend TimeTagger self-hosted, ad es. https://timetagger.example.com. Crea un token API in TimeTagger alla voce Account → Token API.
+Nome tag
+TAGGED
+Tag
+TAGS
+Tocca un nome per rinominarlo · scorri per eliminarlo · usa Modifica per riordinarli.
+Verifica connessione
+L'ora corrente verrà salvata e il timer azzerato.
+Timer
+Versione
+A cosa stai lavorando?
+I tuoi tag

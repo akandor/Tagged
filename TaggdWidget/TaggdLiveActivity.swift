@@ -2,7 +2,8 @@
 //  TaggdLiveActivity.swift
 //  TaggdWidget
 //
-//  Lock Screen banner + Dynamic Island for a running Taggd session.
+//  Lock Screen banner + Dynamic Island for a running Tagged session, with the
+//  app logo and interactive Pause/Resume/Stop controls.
 //
 
 import ActivityKit
@@ -34,7 +35,8 @@ private struct TimerText: View {
     var body: some View {
         Group {
             if state.isRunning {
-                Text(state.startDate, style: .timer)
+                Text(timerInterval: state.startDate...Date.distantFuture, countsDown: false)
+                    .multilineTextAlignment(.trailing)
             } else {
                 Text(formattedElapsed(state.elapsed))
             }
@@ -42,6 +44,59 @@ private struct TimerText: View {
         .font(.system(size: size, weight: weight, design: .monospaced))
         .monospacedDigit()
         .foregroundStyle(state.isRunning ? Color.taggdAccent : .primary)
+    }
+}
+
+/// The app mark on an accent tile, like a miniature app icon.
+private struct LogoBadge: View {
+    var size: CGFloat = 34
+
+    var body: some View {
+        Image("LogoMark")
+            .resizable()
+            .scaledToFit()
+            .padding(size * 0.2)
+            .frame(width: size, height: size)
+            .foregroundStyle(.black)
+            .background(
+                RoundedRectangle(cornerRadius: size * 0.26, style: .continuous)
+                    .fill(Color.taggdAccent)
+            )
+    }
+}
+
+/// Interactive Pause/Resume + Stop buttons backed by LiveActivityIntents.
+private struct ControlButtons: View {
+    let isRunning: Bool
+    var compact = false
+
+    private var diameter: CGFloat { compact ? 30 : 38 }
+    private var glyph: CGFloat { compact ? 12 : 15 }
+
+    var body: some View {
+        HStack(spacing: compact ? 8 : 10) {
+            if isRunning {
+                Button(intent: PauseSessionIntent()) {
+                    icon("pause.fill", fg: .black, bg: Color.taggdAccent)
+                }
+            } else {
+                Button(intent: ResumeSessionIntent()) {
+                    icon("play.fill", fg: .black, bg: Color.taggdAccent)
+                }
+            }
+            Button(intent: StopSessionIntent()) {
+                icon("stop.fill", fg: Color.taggdAccent, bg: Color.white.opacity(0.14))
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func icon(_ name: String, fg: Color, bg: Color) -> some View {
+        Image(systemName: name)
+            .font(.system(size: glyph, weight: .bold))
+            .foregroundStyle(fg)
+            .frame(width: diameter, height: diameter)
+            .background(Circle().fill(bg))
     }
 }
 
@@ -55,9 +110,7 @@ struct TaggdLiveActivity: Widget {
             let state = context.state
             return DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    Image(systemName: state.isRunning ? "record.circle" : "pause.circle")
-                        .font(.title2)
-                        .foregroundStyle(Color.taggdAccent)
+                    LogoBadge(size: 30)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
                     TimerText(state: state, size: 20)
@@ -69,22 +122,32 @@ struct TaggdLiveActivity: Widget {
                         .lineLimit(1)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    if !state.tags.isEmpty {
-                        Text(state.tags.map { "#\($0)" }.joined(separator: " "))
-                            .font(.system(size: 12, design: .monospaced))
-                            .foregroundStyle(Color.taggdAccent)
-                            .lineLimit(1)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack(spacing: 8) {
+                        if !state.tags.isEmpty {
+                            Text(state.tags.map { "#\($0)" }.joined(separator: " "))
+                                .font(.system(size: 12, design: .monospaced))
+                                .foregroundStyle(Color.taggdAccent)
+                                .lineLimit(1)
+                        }
+                        Spacer(minLength: 8)
+                        ControlButtons(isRunning: state.isRunning, compact: true)
                     }
+                    .padding(.top, 2)
                 }
             } compactLeading: {
-                Image(systemName: state.isRunning ? "record.circle" : "pause.circle")
+                Image("LogoMark")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 18, height: 18)
                     .foregroundStyle(Color.taggdAccent)
             } compactTrailing: {
                 TimerText(state: state, size: 14)
                     .frame(maxWidth: 56)
             } minimal: {
-                Image(systemName: "timer")
+                Image("LogoMark")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 18, height: 18)
                     .foregroundStyle(Color.taggdAccent)
             }
             .keylineTint(Color.taggdAccent)
@@ -96,27 +159,40 @@ private struct LockScreenView: View {
     let state: SessionActivityAttributes.ContentState
 
     var body: some View {
-        HStack(alignment: .center, spacing: 14) {
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .center, spacing: 12) {
+                LogoBadge()
                 Text("TAGGED")
                     .font(.system(size: 11, weight: .bold, design: .monospaced))
                     .tracking(2)
                     .foregroundStyle(.secondary)
-                Text(state.descriptionText.isEmpty ? "Tracking…" : state.descriptionText)
-                    .font(.system(size: 15, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.primary)
+                Spacer(minLength: 8)
+                TimerText(state: state, size: 24)
                     .lineLimit(1)
-                if !state.tags.isEmpty {
+            }
+
+            Text(state.descriptionText.isEmpty ? "Tracking…" : state.descriptionText)
+                .font(.system(size: 15, weight: .medium, design: .monospaced))
+                .foregroundStyle(.primary)
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            HStack(spacing: 10) {
+                if state.tags.isEmpty {
+                    Text(state.isRunning ? "Running" : "Paused")
+                        .font(.system(size: 12, design: .monospaced))
+                        .foregroundStyle(.secondary)
+                } else {
                     Text(state.tags.map { "#\($0)" }.joined(separator: " "))
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundStyle(Color.taggdAccent)
                         .lineLimit(1)
                 }
+
+                Spacer(minLength: 8)
+
+                ControlButtons(isRunning: state.isRunning)
             }
-            Spacer(minLength: 8)
-            TimerText(state: state, size: 26)
-                .lineLimit(1)
-                .minimumScaleFactor(0.6)
         }
         .padding(16)
     }

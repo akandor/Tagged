@@ -39,9 +39,22 @@ final class TimeTracker {
     @ObservationIgnored private var segments: [(start: Int, end: Int)] = []
     @ObservationIgnored private var currentSegmentStart: Int = 0
 
-    /// Finished records that still need to reach the server (kept across failures so a
-    /// dropped connection never loses a session; retryable via `retrySync()`).
-    @ObservationIgnored private var pendingRecords: [TimeTaggerClient.Record] = []
+    /// Shared instance so Live Activity intents (which run in the app process) can
+    /// reach the same tracker the UI uses.
+    static let shared = TimeTracker()
+
+    init() {
+        let center = NotificationCenter.default
+        center.addObserver(forName: .taggdPauseSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.pause() }
+        }
+        center.addObserver(forName: .taggdResumeSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.resume() }
+        }
+        center.addObserver(forName: .taggdStopSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.stop() }
+        }
+    }
 
     // MARK: - Controls
 
@@ -50,8 +63,7 @@ final class TimeTracker {
         startDate = Date()
         currentSegmentStart = Int(startDate!.timeIntervalSince1970)
         segments = []
-        // Clear a "saved" badge for the new session, but keep an unresolved failure visible.
-        if pendingRecords.isEmpty { syncStatus = .disabled }
+        syncStatus = .disabled   // clear any "saved/not saved" badge for the new session
         phase = .running
         startTicking()
         LiveActivityController.shared.start(elapsed: 0, description: taskDescription, tags: tagNames)
@@ -78,11 +90,12 @@ final class TimeTracker {
     }
 
     /// Stops the session, builds one finished record per work segment, and uploads them.
+    /// On failure the session is saved locally (offline) so nothing is lost.
     func stop() {
         if phase == .running {
             closeCurrentSegment()
         }
-        enqueueSessionRecords()
+        let finished = buildFinishedSession()
 
         stopTicking()
         accumulated = 0
@@ -92,7 +105,7 @@ final class TimeTracker {
         phase = .idle
 
         LiveActivityController.shared.end()
-        flush()
+        if let finished { saveOrSync(finished) }
     }
 
     /// Selected tag names, for the Live Activity.
@@ -104,15 +117,6 @@ final class TimeTracker {
     }
 
     // MARK: - Server sync
-
-    /// Builds a client from the latest saved settings, or nil if the server isn't configured.
-    private func makeClient() -> TimeTaggerClient? {
-        let defaults = UserDefaults.standard
-        let url = defaults.string(forKey: "serverURL")?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let token = defaults.string(forKey: "apiToken")?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        guard !url.isEmpty, !token.isEmpty else { return nil }
-        return TimeTaggerClient(serverURL: url, token: token)
-    }
 
     /// `<description> #tag1 #tag2`, with tag names sanitized into valid TimeTagger tags.
     private func recordDescription() -> String {
@@ -128,49 +132,47 @@ final class TimeTracker {
         return parts.joined(separator: " ")
     }
 
-    /// Turns the finished session's segments into records queued for upload.
-    /// Skipped entirely when no server is configured (the app stays local-only).
-    private func enqueueSessionRecords() {
-        guard makeClient() != nil, !segments.isEmpty else { return }
+    /// Bundles the finished session's segments into an uploadable unit, or nil when
+    /// there's nothing to save or no server is configured (app stays local-only).
+    private func buildFinishedSession() -> UnsyncedSession? {
+        guard TimeTaggerClient.fromStoredSettings() != nil, !segments.isEmpty else { return nil }
         let ds = recordDescription()
         let mt = Int(Date().timeIntervalSince1970)
         let records = segments.map {
             TimeTaggerClient.Record(key: Self.generateKey(), t1: $0.start, t2: $0.end, mt: mt, ds: ds)
         }
-        pendingRecords.append(contentsOf: records)
+        return UnsyncedSession(
+            stoppedAt: Date(),
+            descriptionText: taskDescription.trimmingCharacters(in: .whitespacesAndNewlines),
+            tags: tagNames,
+            records: records
+        )
     }
 
-    /// Uploads any pending records. Keeps them on failure so nothing is lost.
-    private func flush() {
-        guard !pendingRecords.isEmpty else { return }
-        guard let client = makeClient() else {
+    /// Uploads a finished session; on any failure it's stored offline for later retry.
+    private func saveOrSync(_ session: UnsyncedSession) {
+        guard let client = TimeTaggerClient.fromStoredSettings() else {
             syncStatus = .disabled
             return
         }
-        let batch = pendingRecords
-        let keys = Set(batch.map(\.key))
         syncStatus = .syncing
         Task {
-            let result = await client.pushRecords(batch)
-            switch result {
-            case .success:
-                pendingRecords.removeAll { keys.contains($0.key) }
+            if case .success = await client.pushRecords(session.records) {
                 syncStatus = .synced
-            case .unauthorized:
-                syncStatus = .failed("Invalid token")
-            case .rejected(let message):
-                syncStatus = .failed(message)
-            case .badURL:
-                syncStatus = .failed("Invalid server URL")
-            case .failure(let message):
-                syncStatus = .failed(message)
+            } else {
+                OfflineStore.shared.add(session)
+                syncStatus = .failed("Saved offline")
             }
         }
     }
 
-    /// Retries a previously failed upload (wired to the sync badge).
+    /// Retries all offline sessions (wired to the sync badge / toast).
     func retrySync() {
-        flush()
+        Task {
+            syncStatus = .syncing
+            let cleared = await OfflineStore.shared.retryAll()
+            syncStatus = cleared ? .synced : .failed("Saved offline")
+        }
     }
 
     /// Short random record key (TimeTagger keys are compact alphanumeric strings).

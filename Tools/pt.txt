@@ -1,0 +1,59 @@
+
+%lld
+%1$lld horas %2$lld minutos %3$lld segundos
+Sobre
+Adicionar
+Adicionar uma tag
+Token da API
+Me pague um café
+Cancelar
+Confirmar antes de parar
+Conectado
+Crie uma tag personalizada para esta sessão.
+Concluído
+Gostando do Tagged? Ajude a financiar a próxima atualização.
+Insira o endereço do seu servidor
+Feedback
+GitHub
+Feedback tátil
+Token inválido
+URL inválida
+Continuar
+Manter a tela ativa
+Gerenciar tags
+Nova tag
+Nova tag…
+Ainda não há tags — adicione uma para categorizar esta sessão.
+Ainda não há tags. Adicione uma acima.
+Não salvo
+Abrir servidor no navegador
+Cole seu token da API do TimeTagger
+Pausar
+Pausar sessão
+Avalie este aplicativo
+Remover tag %@
+Retomar
+Retomar sessão
+Tentar novamente
+Salvo
+Servidor
+URL do servidor
+Configurações
+Compartilhar este aplicativo
+Iniciar
+Parar
+Parar sessão
+Parar esta sessão?
+Suporte
+Sincronize com um backend do TimeTagger auto-hospedado, por exemplo, https://timetagger.example.com. Crie um token de API no TimeTagger em Conta → Token de API.
+Nome da tag
+TAGGED
+Tags
+TAGS
+Toque em um nome para renomear · deslize para excluir · use Editar para reordenar.
+Testar conexão
+A hora atual será salva e o cronômetro será reiniciado.
+Cronômetro
+Versão
+No que você está trabalhando?
+Suas tags

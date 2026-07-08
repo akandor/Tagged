@@ -7,11 +7,13 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(TagStore.self) private var tagStore
-    @State private var tracker = TimeTracker()
+    @Environment(OfflineStore.self) private var offlineStore
+    @State private var tracker = TimeTracker.shared
     @State private var showSettings = false
     @State private var showNewTag = false
     @State private var newTagName = ""
     @State private var showStopConfirm = false
+    @State private var showUnsynced = false
     @State private var toast: ToastKind?
     @State private var toastTask: Task<Void, Never>?
     @AppStorage("confirmBeforeStop") private var confirmBeforeStop = false
@@ -22,26 +24,34 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Theme.background.ignoresSafeArea()
+                Theme.background
+                    .ignoresSafeArea()
+                    .contentShape(Rectangle())
+                    .onTapGesture { descriptionFocused = false }
 
-                VStack(spacing: 28) {
-                    Spacer(minLength: 8)
+                VStack(spacing: 0) {
+                    Spacer(minLength: 12)
 
                     TimerDisplay(elapsed: tracker.elapsed, running: tracker.phase == .running)
 
-                    Spacer(minLength: 8)
+                    // Flexible gap: shrinks as the description grows, so the field
+                    // expands upward into this space while the controls stay put.
+                    Spacer(minLength: 20)
 
                     VStack(spacing: 16) {
                         descriptionField
                         tagSection
+                        if offlineStore.hasSessions {
+                            unsyncedButton
+                        }
                     }
-
-                    Spacer(minLength: 8)
+                    .padding(.bottom, 28)
 
                     controls
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 12)
+                .animation(.snappy, value: offlineStore.hasSessions)
             }
             .navigationTitle("")
             .toolbar {
@@ -83,6 +93,10 @@ struct ContentView: View {
             SettingsView()
                 .environment(tagStore)
                 .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showUnsynced) {
+            UnsyncedSessionsView()
+                .environment(offlineStore)
         }
         .alert("New Tag", isPresented: $showNewTag) {
             TextField("Tag name", text: $newTagName)
@@ -139,25 +153,73 @@ struct ContentView: View {
     // MARK: - Description
 
     private var descriptionField: some View {
-        HStack(spacing: 12) {
+        HStack(alignment: .top, spacing: 12) {
             Image(systemName: "pencil.line")
                 .foregroundStyle(Theme.textTertiary)
+                .padding(.top, 2)
             TextField(
                 "",
                 text: $tracker.taskDescription,
                 prompt: Text("What are you working on?")
-                    .foregroundColor(Theme.textTertiary)
+                    .foregroundColor(Theme.textTertiary),
+                axis: .vertical
             )
             .font(.mono(16, .regular))
             .foregroundStyle(Theme.textPrimary)
             .tint(Theme.accent)
             .focused($descriptionFocused)
-            .submitLabel(.done)
-            .onSubmit { descriptionFocused = false }
+            .lineLimit(1...6)
+            .onChange(of: tracker.taskDescription) { _, newValue in
+                // The field wraps long text automatically; treat Return as "done"
+                // rather than inserting a newline.
+                if newValue.contains("\n") {
+                    tracker.taskDescription = newValue.replacingOccurrences(of: "\n", with: "")
+                    descriptionFocused = false
+                }
+            }
         }
         .padding(.horizontal, 16)
-        .frame(height: 54)
+        .padding(.vertical, 15)
         .background(cardBackground)
+        .animation(.snappy(duration: 0.2), value: tracker.taskDescription)
+    }
+
+    // MARK: - Unsynced sessions
+
+    private var unsyncedButton: some View {
+        Button {
+            descriptionFocused = false
+            showUnsynced = true
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "exclamationmark.icloud.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Theme.accent)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("^[\(offlineStore.sessions.count) session](inflect: true) not synced")
+                        .font(.mono(14, .medium))
+                        .foregroundStyle(Theme.textPrimary)
+                    Text("Tap to review and retry")
+                        .font(.mono(12, .regular))
+                        .foregroundStyle(Theme.textSecondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(Theme.textTertiary)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(Theme.accent.opacity(0.12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .strokeBorder(Theme.accent.opacity(0.35), lineWidth: 1)
+                    )
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Tags
@@ -329,10 +391,10 @@ private struct ToastView: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            Image(systemName: kind == .saved ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+            Image(systemName: kind == .saved ? "checkmark.circle.fill" : "exclamationmark.icloud.fill")
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(kind == .saved ? Color.green : Theme.danger)
-            Text(kind == .saved ? "Saved" : "Not saved")
+                .foregroundStyle(kind == .saved ? Color.green : Theme.accent)
+            Text(kind == .saved ? "Saved" : "Saved offline")
                 .font(.mono(14, .medium))
                 .foregroundStyle(Theme.textPrimary)
             if kind == .notSaved {
@@ -428,4 +490,5 @@ private struct SecondaryButton: View {
 #Preview {
     ContentView()
         .environment(TagStore())
+        .environment(OfflineStore.shared)
 }

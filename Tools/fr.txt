@@ -1,0 +1,59 @@
+
+%lld
+%1$lld heures %2$lld minutes %3$lld secondes
+À propos
+Ajouter
+Ajouter un tag
+Jeton API
+Offrez-moi un café
+Annuler
+Confirmer avant d'arrêter
+Connecté
+Créer un tag personnalisé pour cette session.
+Terminé
+Vous appréciez Tagged ? Contribuez à la prochaine mise à jour.
+Saisissez l’adresse de votre serveur
+Commentaires
+GitHub
+Retour haptique
+Jeton non valide
+URL non valide
+Continuer
+Garder l’écran allumé
+Gérer les balises
+Nouvelle balise
+Nouvelle balise…
+Aucune balise pour l’instant — ajoutez-en une pour classer cette session.
+Aucune balise pour l’instant. Ajoutez-en une ci-dessus.
+Non enregistré
+Ouvrir le serveur dans le navigateur
+Collez votre jeton API TimeTagger
+Mettre en pause
+Mettre la session en pause
+Évaluer cette application
+Supprimer le tag %@
+Reprendre
+Reprendre la session
+Réessayer
+Enregistré
+Serveur
+URL du serveur
+Paramètres
+Partager cette application
+Démarrer
+Arrêter
+Arrêter la session
+Arrêter cette session ?
+Assistance
+Synchronisez avec un backend TimeTagger auto-hébergé, par exemple https://timetagger.example.com. Créez un jeton API dans TimeTagger sous Compte → Jeton API.
+Nom du tag
+TAGGED
+Tags
+TAGS
+Appuyez sur un nom pour le renommer · balayez pour supprimer · utilisez « Modifier » pour réorganiser.
+Tester la connexion
+L'heure actuelle sera enregistrée et le chronomètre réinitialisé.
+Chronomètre
+Version
+Sur quoi travaillez-vous ?
+Vos tags

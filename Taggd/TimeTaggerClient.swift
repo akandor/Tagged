@@ -16,6 +16,15 @@ struct TimeTaggerClient {
     let serverURL: String
     let token: String
 
+    /// Builds a client from the saved Server URL + API token, or nil if unconfigured.
+    static func fromStoredSettings() -> TimeTaggerClient? {
+        let defaults = UserDefaults.standard
+        let url = defaults.string(forKey: "serverURL")?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let token = defaults.string(forKey: "apiToken")?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        guard !url.isEmpty, !token.isEmpty else { return nil }
+        return TimeTaggerClient(serverURL: url, token: token)
+    }
+
     enum ConnectionResult: Equatable {
         case success(serverTime: Double)
         case unauthorized
