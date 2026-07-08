@@ -1,0 +1,59 @@
+
+%lld
+%1$lld horas %2$lld minutos %3$lld segundos
+Sobre
+Adicionar
+Adicionar uma tag
+Token da API
+Verificar atualizações automaticamente
+Voltar às configurações
+Me pague um café
+Cancelar
+Verificando atualizações…
+Clique em um nome para renomear · arraste para reordenar · coloque na lixeira para excluir.
+Confirmar antes de parar
+Conectado
+Crie uma tag personalizada para esta sessão.
+Excluir tag %@
+Concluído
+Gostando do Tagged? Ajude a financiar a próxima atualização.
+Insira o endereço do seu servidor
+GitHub
+Token inválido
+URL inválida
+Continuar
+Iniciar ao fazer login
+Gerenciar tags
+Nova tag
+Nova tag…
+Ainda não há tags — adicione uma para categorizar esta sessão.
+Ainda não há tags. Adicione uma acima.
+Não salvo
+Abrir servidor no navegador
+Cole seu token da API do TimeTagger
+Pausar
+Sair do Tagged
+Remover a tag %@
+Retomar
+Tentar novamente
+Salvo
+Servidor
+URL do servidor
+Configurações
+Iniciar
+Parar
+Parar esta sessão?
+Suporte
+Sincronize com um backend do TimeTagger auto-hospedado, por exemplo, https://timetagger.example.com. Crie um token da API no TimeTagger em Conta → Token da API.
+Nome da tag
+TAGGED
+Tags
+TAGS
+Testar conexão
+A hora atual será salva e o cronômetro reiniciado.
+Cronômetro
+Atualizações
+As atualizações são fornecidas pelo GitHub Releases e verificadas por meio de uma assinatura. O aplicativo não é distribuído pela Mac App Store.
+Versão
+No que você está trabalhando?
+Suas tags

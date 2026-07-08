@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# python3 xcstrings.py export Localizable.xcstrings en.txt
+# python3 /Volumes/FData/Development/Taggd/Tools/xcstrings.py export Localizable.xcstrings en.txt
+#
+# python3 xcstrings.py import Localizable.xcstrings fr fr.txt
+# python3 /Volumes/FData/Development/Taggd/Tools/xcstrings.py import Localizable.xcstrings es sp.txt
+
 import json
 import argparse
 from pathlib import Path

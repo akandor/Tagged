@@ -1,0 +1,59 @@
+
+%lld
+%1$lld horas %2$lld minutos %3$lld segundos
+Acerca de
+Añadir
+Añadir una etiqueta
+Token de API
+Buscar actualizaciones automáticamente
+Volver a la configuración
+Invítame a un café
+Cancelar
+Buscando actualizaciones…
+Haz clic en un nombre para cambiarlo · arrastra para reordenar · lleva a la papelera para eliminar.
+Confirmar antes de detener
+Conectado
+Crea una etiqueta personalizada para esta sesión.
+Eliminar etiqueta %@
+Hecho
+¿Te gusta Tagged? Contribuye a la próxima actualización.
+Introduce la dirección de tu servidor
+GitHub
+Token no válido
+URL no válida
+Seguir adelante
+Iniciar al iniciar sesión
+Gestionar etiquetas
+Nueva etiqueta
+Nueva etiqueta…
+Aún no hay etiquetas: añade una para clasificar esta sesión.
+Aún no hay etiquetas. Añade una arriba.
+No se ha guardado
+Abrir el servidor en el navegador
+Pega tu token de la API de TimeTagger
+Pausar
+Salir de Tagged
+Eliminar la etiqueta %@
+Reanudar
+Reintentar
+Guardado
+Servidor
+URL del servidor
+Configuración
+Iniciar
+Detener
+¿Deseas detener esta sesión?
+Ayuda
+Sincroniza con un backend de TimeTagger autohospedado, p. ej., https://timetagger.example.com. Crea un token de la API en TimeTagger en Cuenta → Token de la API.
+Nombre de la etiqueta
+TAGGED
+Etiquetas
+TAGS
+Probar conexión
+Se guardará la hora actual y se reiniciará el temporizador.
+Temporizador
+Actualizaciones
+Las actualizaciones se distribuyen desde GitHub Releases y se verifican mediante una firma. La aplicación no se distribuye a través de la Mac App Store.
+Versión
+¿En qué estás trabajando?
+Tus etiquetas

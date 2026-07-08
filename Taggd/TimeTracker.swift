@@ -44,6 +44,9 @@ final class TimeTracker {
     static let shared = TimeTracker()
 
     init() {
+        // Live Activity buttons (iOS only) post these; the macOS app drives the
+        // tracker directly, so it doesn't need — or define — these notifications.
+        #if os(iOS)
         let center = NotificationCenter.default
         center.addObserver(forName: .taggdPauseSession, object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.pause() }
@@ -54,6 +57,7 @@ final class TimeTracker {
         center.addObserver(forName: .taggdStopSession, object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.stop() }
         }
+        #endif
     }
 
     // MARK: - Controls

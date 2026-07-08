@@ -41,7 +41,7 @@ independent port that mirrors the same behavior and styling.
 
 ## Requirements
 
-- **iOS / iPadOS 26.5+** — Xcode 26+, an Apple developer account for device installs.
+- **iOS / iPadOS 26.0+** — Xcode 26+, an Apple developer account for device installs.
 - **macOS 14 (Sonoma)+** — Xcode 26+.
 - **Windows 10/11** — Visual Studio 2022 (17.8+) with the *.NET desktop development* workload, or the .NET 8 SDK.
 
@@ -103,4 +103,4 @@ project.yml      XcodeGen spec for the macOS target
 
 ## License
 
-© Toepper.Rocks. See repository for details.
+See [LICENSE](LICENSE)

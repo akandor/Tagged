@@ -1,0 +1,59 @@
+
+%lld
+%1$lld Stunden %2$lld Minuten %3$lld Sekunden
+Über
+Hinzufügen
+Tag hinzufügen
+API-Token
+Automatisch nach Updates suchen
+Zurück zu den Einstellungen
+Lade mir einen Kaffee ein
+Abbrechen
+Nach Updates suchen…
+Klicke auf einen Namen, um ihn umzubenennen · per Drag & Drop neu anordnen · in den Papierkorb verschieben, um zu löschen.
+Vor dem Beenden bestätigen
+Verbunden
+Erstelle ein benutzerdefiniertes Tag für diese Sitzung.
+Tag %@ löschen
+Fertig
+Gefällt dir Tagged? Unterstütze das nächste Update.
+Gib deine Serveradresse ein
+GitHub
+Ungültiges Token
+Ungültige URL
+Weitermachen
+Beim Anmelden starten
+Tags verwalten
+Neues Tag
+Neues Tag…
+Noch keine Tags – füge eines hinzu, um diese Sitzung zu kategorisieren.
+Noch keine Tags. Füge oben eines hinzu.
+Nicht gespeichert
+Server im Browser öffnen
+Füge deinen TimeTagger-API-Token ein
+Pause
+Tagged beenden
+Tag %@ entfernen
+Fortsetzen
+Erneut versuchen
+Gespeichert
+Server
+Server-URL
+Einstellungen
+Start
+Stopp
+Diese Sitzung beenden?
+Support
+Synchronisiere mit einem selbst gehosteten TimeTagger-Backend, z. B. https://timetagger.example.com. Erstelle einen API-Token in TimeTagger unter „Konto“ → „API-Token“.
+Tag-Name
+TAGGED
+Tags
+TAGS
+Verbindung testen
+Die aktuelle Uhrzeit wird gespeichert und der Timer zurückgesetzt.
+Timer
+Updates
+Updates werden über GitHub Releases bereitgestellt und anhand einer Signatur verifiziert. Die App wird nicht über den Mac App Store vertrieben.
+Version
+Woran arbeitest du gerade?
+Deine Tags
