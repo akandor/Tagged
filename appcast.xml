@@ -10,13 +10,5 @@
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <enclosure url="https://github.com/akandor/Tagged/releases/download/1.0-b22/Tagged-1.0-b22.zip" length="4102197" type="application/octet-stream" sparkle:edSignature="YGxJyy4S0LBewJiskPExBV/nlDT5lzj0a7Cy++dNAAmxZTnaw+h7fqMSMMMykQ8VepSPc8FRyPw/f1/3KUErBg=="/>
         </item>
-        <item>
-            <title>1.0</title>
-            <pubDate>Tue, 07 Jul 2026 21:37:00 +0200</pubDate>
-            <sparkle:version>1</sparkle:version>
-            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/akandor/Tagged/releases/download/1.0-b22/Tagged-1.0-b22.zip" length="4100947" type="application/octet-stream" sparkle:edSignature="ZgeEOT56aDlTS1P+eDdJfXfp8cSwsbSyMjKNBtkURd5JTSJIx0SZHZB+Ua8tOKfoHv3XV3UAsGZL085RjVeCBg=="/>
-        </item>
     </channel>
 </rss>

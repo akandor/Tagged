@@ -77,9 +77,12 @@ jobs:
           TAG: ${{ steps.meta.outputs.tag }}
         run: |
           set -euo pipefail
-          # Seed with the committed appcast so previous entries (and their own
-          # per-release download URLs) are preserved.
-          [ -f appcast.xml ] && cp appcast.xml dist/appcast.xml || true
+          # Generate a fresh, single-item appcast from just this release's archive.
+          # We deliberately do NOT seed dist/ with the previously committed
+          # appcast: doing so made generate_appcast accumulate stale entries
+          # (e.g. duplicate items pointing at the same zip with mismatched
+          # sparkle:version / length / signature). "Update to latest" only needs
+          # the newest item, so a clean one-item appcast is correct here.
           # Strip any surrounding whitespace/newline the secret may carry.
           printf '%s' "$SPARKLE_PRIVATE_KEY" | tr -d '[:space:]' | sparkle/bin/generate_appcast \
             --ed-key-file - \
