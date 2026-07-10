@@ -3,12 +3,12 @@
     <channel>
         <title>Tagged</title>
         <item>
-            <title>1.0</title>
-            <pubDate>Tue, 07 Jul 2026 19:57:27 +0000</pubDate>
-            <sparkle:version>22</sparkle:version>
-            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/akandor/Tagged/releases/download/1.0-b22/Tagged-1.0-b22.zip" length="4102197" type="application/octet-stream" sparkle:edSignature="YGxJyy4S0LBewJiskPExBV/nlDT5lzj0a7Cy++dNAAmxZTnaw+h7fqMSMMMykQ8VepSPc8FRyPw/f1/3KUErBg=="/>
+            <title>1.1</title>
+            <pubDate>Fri, 10 Jul 2026 10:15:22 +0000</pubDate>
+            <sparkle:version>41</sparkle:version>
+            <sparkle:shortVersionString>1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/akandor/Tagged/releases/download/1.1-b41/Tagged-1.1-b41.zip" length="4678538" type="application/octet-stream" sparkle:edSignature="/4ZmsAM5qLGhrxGBUbuCNvZnWbwQYTl4hi3i0yTjLJ04i2XDVMiBhdyJPD4Ag7BUrOVn7albsH4qiR8Fyn8TCw=="/>
         </item>
     </channel>
 </rss>
