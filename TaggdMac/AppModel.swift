@@ -13,7 +13,9 @@ import SwiftUI
 final class AppModel {
     static let shared = AppModel()
 
-    let tracker = TimeTracker()
+    // Use the shared tracker so widget/Shortcuts intents (which reach
+    // `TimeTracker.shared`) drive the very same session the menu bar shows.
+    let tracker = TimeTracker.shared
     let tagStore = TagStore()
 
     private init() {}

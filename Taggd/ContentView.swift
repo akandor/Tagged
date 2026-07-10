@@ -14,11 +14,12 @@ struct ContentView: View {
     @State private var newTagName = ""
     @State private var showStopConfirm = false
     @State private var showUnsynced = false
+    @State private var showEntries = false
     @State private var toast: ToastKind?
     @State private var toastTask: Task<Void, Never>?
     @AppStorage("confirmBeforeStop") private var confirmBeforeStop = false
     @AppStorage("serverURL") private var serverURL = ""
-    @Environment(\.openURL) private var openURL
+    @AppStorage("apiToken") private var apiToken = ""
     @FocusState private var descriptionFocused: Bool
 
     var body: some View {
@@ -56,16 +57,16 @@ struct ContentView: View {
             .navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    if let url = serverWebURL {
+                    if serverConfigured {
                         Button {
                             descriptionFocused = false
-                            openURL(url)
+                            showEntries = true
                         } label: {
-                            Image(systemName: "cloud")
+                            Image(systemName: "calendar.badge.clock")
                                 .font(.system(size: 17, weight: .semibold))
                         }
                         .tint(Theme.textPrimary)
-                        .accessibilityLabel("Open server in browser")
+                        .accessibilityLabel("Time entries")
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -97,6 +98,10 @@ struct ContentView: View {
         .sheet(isPresented: $showUnsynced) {
             UnsyncedSessionsView()
                 .environment(offlineStore)
+        }
+        .sheet(isPresented: $showEntries) {
+            EntriesView()
+                .environment(tagStore)
         }
         .alert("New Tag", isPresented: $showNewTag) {
             TextField("Tag name", text: $newTagName)
@@ -130,14 +135,10 @@ struct ContentView: View {
         }
     }
 
-    /// The configured server address as an openable web URL, or `nil` when no
-    /// server is set. Assumes `https` when the stored value omits a scheme.
-    private var serverWebURL: URL? {
-        let trimmed = serverURL.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return nil }
-        let normalized = trimmed.contains("://") ? trimmed : "https://\(trimmed)"
-        guard let url = URL(string: normalized), url.host != nil else { return nil }
-        return url
+    /// Whether a server URL + token are set, gating the entries overview button.
+    private var serverConfigured: Bool {
+        !serverURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !apiToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     private func presentToast(_ kind: ToastKind) {
@@ -430,16 +431,16 @@ private struct TagChip: View {
                 Image(systemName: "xmark")
                     .font(.system(size: 10, weight: .bold))
             }
-            .foregroundStyle(Theme.accent)
+            .foregroundStyle(tag.color)
             .padding(.leading, 12)
             .padding(.trailing, 10)
             .padding(.vertical, 7)
             .background(
                 Capsule(style: .continuous)
-                    .fill(Theme.accent.opacity(0.14))
+                    .fill(tag.color.opacity(0.14))
                     .overlay(
                         Capsule(style: .continuous)
-                            .strokeBorder(Theme.accent.opacity(0.35), lineWidth: 1)
+                            .strokeBorder(tag.color.opacity(0.35), lineWidth: 1)
                     )
             )
         }

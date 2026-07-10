@@ -46,31 +46,103 @@ final class TimeTracker {
     init() {
         // Live Activity buttons (iOS only) post these; the macOS app drives the
         // tracker directly, so it doesn't need — or define — these notifications.
+        // iOS widget/Live Activity intents run in the app process and post
+        // in-process notifications; macOS widget intents run in the extension, so
+        // the always-running menu-bar app listens for cross-process distributed
+        // notifications instead.
         #if os(iOS)
         let center = NotificationCenter.default
+        center.addObserver(forName: .taggdStartSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.phase != .running ? $0.start() : () } }
+        }
         center.addObserver(forName: .taggdPauseSession, object: nil, queue: .main) { [weak self] _ in
-            MainActor.assumeIsolated { self?.pause() }
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.pause() } }
         }
         center.addObserver(forName: .taggdResumeSession, object: nil, queue: .main) { [weak self] _ in
-            MainActor.assumeIsolated { self?.resume() }
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.resume() } }
         }
         center.addObserver(forName: .taggdStopSession, object: nil, queue: .main) { [weak self] _ in
-            MainActor.assumeIsolated { self?.stop() }
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.stop() } }
+        }
+        #elseif os(macOS)
+        let center = DistributedNotificationCenter.default()
+        center.addObserver(forName: .taggdStartSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.phase != .running ? $0.start() : () } }
+        }
+        center.addObserver(forName: .taggdPauseSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.pause() } }
+        }
+        center.addObserver(forName: .taggdResumeSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.resume() } }
+        }
+        center.addObserver(forName: .taggdStopSession, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleWidgetAction { $0.stop() } }
         }
         #endif
     }
 
+    // MARK: - Widget interactivity
+
+    /// Runs an action from a widget/Live Activity button, then marks the pending
+    /// action consumed so a later reconcile (app foreground) won't repeat it.
+    private func handleWidgetAction(_ body: (TimeTracker) -> Void) {
+        body(self)
+        if let pending = WidgetSharedStore.pendingAction() {
+            WidgetSharedStore.markHandled(pending.id)
+        }
+    }
+
+    /// Applies a widget-initiated action that hasn't reached the tracker yet
+    /// (e.g. the tap only woke the widget process). Call when the app becomes
+    /// active. Per-phase guards inside start/pause/resume/stop make it a no-op
+    /// when the action doesn't apply to the current state.
+    func applyPendingWidgetAction() {
+        guard let action = WidgetSharedStore.pendingAction(),
+              WidgetSharedStore.isUnhandled(action) else {
+            writeWidgetSession()   // keep the snapshot in sync with the live tracker
+            return
+        }
+        switch action.kind {
+        case .start:  if phase != .running { start(at: action.date) }
+        case .pause:  pause()
+        case .resume: resume()
+        case .stop:   stop()
+        }
+        WidgetSharedStore.markHandled(action.id)
+    }
+
+    /// Mirrors the current live session into the shared snapshot for the widgets.
+    private func writeWidgetSession(lastSessionSeconds: TimeInterval? = nil) {
+        let now = Date()
+        let running = (phase == .running)
+        let virtualStart = running ? now.addingTimeInterval(-elapsed) : now
+        WidgetBridge.updateSession(
+            isTracking: phase != .idle,
+            isRunning: running,
+            startDate: virtualStart,
+            elapsed: elapsed,
+            description: taskDescription,
+            tags: selectedTags,
+            lastSessionSeconds: lastSessionSeconds
+        )
+    }
+
     // MARK: - Controls
 
-    func start() {
+    /// Starts a session. Pass `at` in the past to backdate the start ("started
+    /// earlier"); the on-screen clock and Live Activity then count from that time.
+    func start(at date: Date = Date()) {
         guard phase != .running else { return }
-        startDate = Date()
-        currentSegmentStart = Int(startDate!.timeIntervalSince1970)
+        startDate = date
+        accumulated = 0
+        currentSegmentStart = Int(date.timeIntervalSince1970)
         segments = []
         syncStatus = .disabled   // clear any "saved/not saved" badge for the new session
         phase = .running
         startTicking()
-        LiveActivityController.shared.start(elapsed: 0, description: taskDescription, tags: tagNames)
+        let initialElapsed = max(0, Date().timeIntervalSince(date))
+        LiveActivityController.shared.start(elapsed: initialElapsed, description: taskDescription, tags: tagNames)
+        writeWidgetSession()
     }
 
     func pause() {
@@ -82,6 +154,7 @@ final class TimeTracker {
         phase = .paused
         stopTicking()
         LiveActivityController.shared.update(isRunning: false, elapsed: accumulated, description: taskDescription, tags: tagNames)
+        writeWidgetSession()
     }
 
     func resume() {
@@ -91,11 +164,13 @@ final class TimeTracker {
         phase = .running
         startTicking()
         LiveActivityController.shared.update(isRunning: true, elapsed: accumulated, description: taskDescription, tags: tagNames)
+        writeWidgetSession()
     }
 
     /// Stops the session, builds one finished record per work segment, and uploads them.
     /// On failure the session is saved locally (offline) so nothing is lost.
     func stop() {
+        let finalElapsed = elapsed
         if phase == .running {
             closeCurrentSegment()
         }
@@ -109,6 +184,7 @@ final class TimeTracker {
         phase = .idle
 
         LiveActivityController.shared.end()
+        writeWidgetSession(lastSessionSeconds: finalElapsed)
         if let finished { saveOrSync(finished) }
     }
 

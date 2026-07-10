@@ -109,30 +109,41 @@ struct TaggdLiveActivity: Widget {
         } dynamicIsland: { context in
             let state = context.state
             return DynamicIsland {
+                // Only small, glanceable content flanks the camera; the long
+                // description goes in the full-width bottom region so it can wrap.
                 DynamicIslandExpandedRegion(.leading) {
                     LogoBadge(size: 30)
+                        .padding(.leading, 6)
+                        .padding(.top, 4)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    TimerText(state: state, size: 20)
-                }
-                DynamicIslandExpandedRegion(.center) {
-                    Text(state.descriptionText.isEmpty ? "Tracking" : state.descriptionText)
-                        .font(.system(size: 14, weight: .medium, design: .monospaced))
-                        .foregroundStyle(.primary)
+                    TimerText(state: state, size: 18)
                         .lineLimit(1)
+                        .padding(.trailing, 6)
+                        .padding(.top, 4)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack(spacing: 8) {
-                        if !state.tags.isEmpty {
-                            Text(state.tags.map { "#\($0)" }.joined(separator: " "))
-                                .font(.system(size: 12, design: .monospaced))
-                                .foregroundStyle(Color.taggdAccent)
-                                .lineLimit(1)
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(state.descriptionText.isEmpty ? "Tracking…" : state.descriptionText)
+                            .font(.system(size: 15, weight: .medium, design: .monospaced))
+                            .foregroundStyle(.primary)
+                            .lineLimit(2)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        HStack(spacing: 8) {
+                            if !state.tags.isEmpty {
+                                Text(state.tags.map { "#\($0)" }.joined(separator: " "))
+                                    .font(.system(size: 12, design: .monospaced))
+                                    .foregroundStyle(Color.taggdAccent)
+                                    .lineLimit(1)
+                            }
+                            Spacer(minLength: 8)
+                            ControlButtons(isRunning: state.isRunning, compact: true)
                         }
-                        Spacer(minLength: 8)
-                        ControlButtons(isRunning: state.isRunning, compact: true)
                     }
-                    .padding(.top, 2)
+                    // Keep content clear of the island's rounded corners.
+                    .padding(.horizontal, 6)
+                    .padding(.bottom, 4)
                 }
             } compactLeading: {
                 Image("LogoMark")

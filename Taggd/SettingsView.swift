@@ -13,10 +13,14 @@ struct SettingsView: View {
 
     private let githubURL = URL(string: "https://github.com/akandor/Tagged")!
     private let buyMeACoffeeURL = URL(string: "https://buymeacoffee.com/toepper.rocks")!
+    private let timetaggerURL = URL(string: "https://timetagger.app")!
 
     @AppStorage("keepScreenAwake") private var keepScreenAwake = false
     @AppStorage("hapticsEnabled") private var hapticsEnabled = true
     @AppStorage("confirmBeforeStop") private var confirmBeforeStop = false
+
+    @AppStorage("weekStartsOn") private var weekStart: WeekStart = .monday
+    @AppStorage("workdays") private var workdays: Workdays = .mondayToFriday
 
     @AppStorage("serverURL") private var serverURL = ""
     @AppStorage("apiToken") private var apiToken = ""
@@ -48,6 +52,30 @@ struct SettingsView: View {
                     }
                 }
 
+                Section {
+                    Picker(selection: $weekStart) {
+                        ForEach(WeekStart.allCases) { option in
+                            Text(option.label).tag(option)
+                        }
+                    } label: {
+                        settingLabel("Week Starts On", "calendar")
+                    }
+
+                    Picker(selection: $workdays) {
+                        ForEach(Workdays.allCases) { option in
+                            Text(option.label).tag(option)
+                        }
+                    } label: {
+                        settingLabel("Workdays", "briefcase")
+                    }
+                } header: {
+                    Text("Entries")
+                } footer: {
+                    Text("Controls how the entries overview lays out each week.")
+                        .font(.mono(11, .regular))
+                        .foregroundStyle(Theme.textTertiary)
+                }
+
                 Section("Tags") {
                     NavigationLink {
                         TagManagerView()
@@ -72,9 +100,12 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
-                        .font(.mono(15, .semiBold))
-                        .tint(Theme.accent)
+                    Button { dismiss() }  label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 17, weight: .semibold))
+                    }
+                        .tint(Theme.textSecondary)
+                        .accessibilityLabel("Close")
                 }
             }
         }
@@ -142,6 +173,17 @@ struct SettingsView: View {
                 }
             }
             .disabled(serverURL.isEmpty || apiToken.isEmpty || connection == .testing)
+            if let url = URL(string: serverURL), url.scheme != nil {
+                Link(destination: url) {
+                    HStack {
+                        settingLabel("Open in Browser", "globe")
+                        Spacer()
+                        Image(systemName: "arrow.up.right")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+            }
         } header: {
             Text("Server")
         } footer: {
@@ -223,6 +265,15 @@ struct SettingsView: View {
             Link(destination: githubURL) {
                 HStack {
                     settingLabel("GitHub", asset: "GitHubMark")
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+            Link(destination: timetaggerURL) {
+                HStack {
+                    settingLabel("TimeTagger", "number")
                     Spacer()
                     Image(systemName: "arrow.up.right")
                         .font(.system(size: 12, weight: .semibold))

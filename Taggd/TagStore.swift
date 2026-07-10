@@ -27,23 +27,26 @@ final class TagStore {
 
     /// Adds a tag (or returns the existing one for a duplicate name). Returns nil for empty input.
     @discardableResult
-    func add(_ name: String) -> Tag? {
+    func add(_ name: String, colorHex: String = Tag.defaultColorHex) -> Tag? {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return nil }
         if let existing = tags.first(where: { $0.name.caseInsensitiveCompare(trimmed) == .orderedSame }) {
             return existing
         }
-        let tag = Tag(name: trimmed)
+        let tag = Tag(name: trimmed, colorHex: colorHex)
         tags.append(tag)
         save()
         return tag
     }
 
-    func rename(_ id: Tag.ID, to name: String) {
+    /// Updates a tag's name and/or color. Ignores empty names.
+    func update(_ id: Tag.ID, name: String, colorHex: String) {
+        guard let index = tags.firstIndex(where: { $0.id == id }) else { return }
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty, let index = tags.firstIndex(where: { $0.id == id }) else { return }
-        guard tags[index].name != trimmed else { return }
+        guard !trimmed.isEmpty else { return }
+        guard tags[index].name != trimmed || tags[index].colorHex != colorHex else { return }
         tags[index].name = trimmed
+        tags[index].colorHex = colorHex
         save()
     }
 

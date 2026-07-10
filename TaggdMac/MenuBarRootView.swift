@@ -13,9 +13,14 @@ import AppKit
 struct MenuBarRootView: View {
     @Environment(TagStore.self) private var tagStore
     @Environment(TimeTracker.self) private var tracker
+    @Environment(OfflineStore.self) private var offlineStore
 
     /// Opens the standalone Settings window (and shows the Dock icon).
     let onOpenSettings: () -> Void
+    /// Opens the standalone Time Entries window.
+    let onOpenEntries: () -> Void
+    /// Opens the standalone Unsynced sessions window.
+    let onOpenUnsynced: () -> Void
 
     @State private var showNewTag = false
     @State private var newTagName = ""
@@ -24,7 +29,7 @@ struct MenuBarRootView: View {
     @State private var toastTask: Task<Void, Never>?
     @AppStorage("confirmBeforeStop") private var confirmBeforeStop = false
     @AppStorage("serverURL") private var serverURL = ""
-    @Environment(\.openURL) private var openURL
+    @AppStorage("apiToken") private var apiToken = ""
     @FocusState private var descriptionFocused: Bool
 
     var body: some View {
@@ -92,18 +97,32 @@ struct MenuBarRootView: View {
                 .foregroundStyle(Theme.textSecondary)
             Spacer()
             HStack(spacing: 14) {
-                if let url = serverWebURL {
+                if offlineStore.hasSessions {
                     Button {
                         descriptionFocused = false
-                        openURL(url)
+                        onOpenUnsynced()
                     } label: {
-                        Image(systemName: "cloud")
+                        Image(systemName: "exclamationmark.icloud.fill")
+                            .font(.system(size: 15, weight: .regular))
+                            .foregroundStyle(Theme.accent)
+                    }
+                    .buttonStyle(.plain)
+                    .help("^[\(offlineStore.sessions.count) session](inflect: true) not synced")
+                    .accessibilityLabel("Unsynced sessions")
+                }
+
+                if serverConfigured {
+                    Button {
+                        descriptionFocused = false
+                        onOpenEntries()
+                    } label: {
+                        Image(systemName: "calendar.badge.clock")
                             .font(.system(size: 15, weight: .regular))
                             .foregroundStyle(Theme.textPrimary)
                     }
                     .buttonStyle(.plain)
-                    .help("Open server in browser")
-                    .accessibilityLabel("Open server in browser")
+                    .help("Time entries")
+                    .accessibilityLabel("Time entries")
                 }
 
                 Button {
@@ -131,14 +150,10 @@ struct MenuBarRootView: View {
         }
     }
 
-    /// The configured server address as an openable web URL, or `nil` when no
-    /// server is set. Assumes `https` when the stored value omits a scheme.
-    private var serverWebURL: URL? {
-        let trimmed = serverURL.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return nil }
-        let normalized = trimmed.contains("://") ? trimmed : "https://\(trimmed)"
-        guard let url = URL(string: normalized), url.host != nil else { return nil }
-        return url
+    /// Whether a server URL + token are set, gating the entries button.
+    private var serverConfigured: Bool {
+        !serverURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !apiToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     // MARK: - Description

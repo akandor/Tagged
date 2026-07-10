@@ -1,81 +1,82 @@
 //
-//  UnsyncedSessionsView.swift
-//  Taggd
+//  MacUnsyncedSessionsView.swift
+//  TaggdMac
 //
-//  Sessions saved offline because the server was unreachable. Retry them here.
+//  Sessions saved offline because the server was unreachable. Hosted in its own
+//  window (opened from the cloud button in the menu-bar popover). Mirrors the iOS
+//  UnsyncedSessionsView: a grouped table of pending sessions with per-row retry,
+//  Retry All, and delete. Standard traffic-light controls close the window.
 //
 
 import SwiftUI
 
-struct UnsyncedSessionsView: View {
+struct MacUnsyncedSessionsView: View {
     @Environment(OfflineStore.self) private var store
-    @Environment(\.dismiss) private var dismiss
     @State private var retryingAll = false
 
     var body: some View {
-        NavigationStack {
-            List {
-                if store.sessions.isEmpty {
-                    ContentUnavailableView(
-                        "All Synced",
-                        systemImage: "checkmark.icloud",
-                        description: Text("No sessions are waiting to be uploaded.")
-                    )
-                    .listRowBackground(Color.clear)
-                } else {
+        Group {
+            if store.sessions.isEmpty {
+                ContentUnavailableView(
+                    "All Synced",
+                    systemImage: "checkmark.icloud",
+                    description: Text("No sessions are waiting to be uploaded.")
+                )
+            } else {
+                Form {
                     Section {
                         ForEach(store.sessions) { session in
                             SessionRow(session: session, isRetrying: store.retrying.contains(session.id)) {
                                 Task { await store.retry(session) }
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
+                            .contextMenu {
+                                Button("Delete", role: .destructive) { store.remove(session.id) }
+                            }
                         }
-                        .onDelete { store.remove(at: $0) }
                     } footer: {
-                        Text("These sessions are stored on your device and will not sync automatically. Tap a session — or Retry All — to upload it to your server.")
+                        Text("These sessions are stored on this Mac and will not sync automatically. Click a session — or Retry All — to upload it to your server.")
                             .font(.mono(11, .regular))
                             .foregroundStyle(Theme.textTertiary)
                     }
                 }
+                .formStyle(.grouped)
+                .scrollContentBackground(.hidden)
+                .overlayScrollbars()
             }
-            .scrollContentBackground(.hidden)
-            .background(Theme.background.ignoresSafeArea())
-            .navigationTitle("Unsynced")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 17, weight: .semibold))
-                    }
-                        .tint(Theme.textSecondary)
-                        .accessibilityLabel("Close")
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        retryingAll = true
-                        Task {
-                            _ = await store.retryAll()
-                            retryingAll = false
-                        }
-                    } label: {
-                        if retryingAll {
-                            ProgressView().tint(Theme.accent)
-                        } else {
-                            Image(systemName: "arrow.trianglehead.clockwise.icloud")
-                                .font(.system(size: 17, weight: .semibold))
-                        }
-                    }
-                    .tint(Theme.accent)
-                    .accessibilityLabel("Retry All")
-                    .disabled(store.sessions.isEmpty || retryingAll)
-                }
-            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Theme.background)
+        .overlay(alignment: .bottomTrailing) {
+            if !store.sessions.isEmpty { retryAllButton }
         }
         .tint(Theme.accent)
         .preferredColorScheme(.dark)
     }
+
+    /// A big round "Retry All" button, matching the entries window's add button.
+    private var retryAllButton: some View {
+        RoundActionButton(
+            systemImage: "arrow.trianglehead.clockwise.icloud",
+            isBusy: retryingAll,
+            help: "Retry All",
+            action: retryAll
+        )
+    }
+
+    private func retryAll() {
+        guard !retryingAll else { return }
+        retryingAll = true
+        Task {
+            _ = await store.retryAll()
+            retryingAll = false
+        }
+    }
 }
 
+/// A single unsynced session: title, duration + timestamp, tags, and a retry
+/// button. Matches the iOS SessionRow layout.
 private struct SessionRow: View {
     let session: UnsyncedSession
     let isRetrying: Bool
@@ -105,7 +106,7 @@ private struct SessionRow: View {
             Spacer(minLength: 8)
             Button(action: onRetry) {
                 if isRetrying {
-                    ProgressView().tint(Theme.accent)
+                    ProgressView().controlSize(.small).tint(Theme.accent)
                 } else {
                     Image(systemName: "arrow.clockwise.icloud")
                         .font(.system(size: 18, weight: .semibold))
@@ -114,6 +115,7 @@ private struct SessionRow: View {
             }
             .buttonStyle(.plain)
             .disabled(isRetrying)
+            .help("Retry")
         }
         .padding(.vertical, 4)
     }

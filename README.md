@@ -1,3 +1,5 @@
+![Coming Soon](https://img.shields.io/badge/App%20Store-Coming%20Soon-lightgrey?logo=apple)
+
 <div align="center">
 
 # Tagged
@@ -19,8 +21,8 @@ shared dark theme, a gold accent, and Roboto Mono type across every platform:
 
 | Platform | Target | Form factor | Tech |
 | --- | --- | --- | --- |
-| iOS / iPadOS | `Taggd` | Full‑screen app + Live Activity widget | SwiftUI |
-| macOS | `TaggdMac` | Menu‑bar app with a settings window | SwiftUI + [Sparkle](https://sparkle-project.org) |
+| iOS / iPadOS | `Taggd` | Full‑screen app, Live Activity, Home Screen widgets, Control Center, Shortcuts | SwiftUI |
+| macOS | `TaggdMac` | Menu‑bar app, Notification Center / desktop widgets, Shortcuts | SwiftUI + [Sparkle](https://sparkle-project.org) |
 | Windows | `TaggdWin` | System‑tray app | WPF (.NET 8) + [Velopack](https://velopack.io) |
 
 The Apple targets share their model, networking, and design code (`Taggd/Models.swift`,
@@ -34,6 +36,9 @@ independent port that mirrors the same behavior and styling.
 - **Sync to your own server** — connect a self‑hosted TimeTagger backend with a URL and API token; stopped sessions upload automatically with a saved / not‑saved toast.
 - **Offline‑friendly** — track locally and sync when reachable.
 - **Live Activity (iOS)** — running timer on the Lock Screen and Dynamic Island.
+- **Home Screen widgets** — a small Quick Timer, a medium Today's Overview (time per tag), and a large Timeline, with interactive Start/Stop buttons. On macOS the same widgets live in Notification Center and on the desktop.
+- **Control Center (iOS 18+)** — a Start/Stop toggle you can add to Control Center, the Lock Screen, or the Action Button.
+- **Siri & Shortcuts** — start, stop, pause, resume, and query the current session by voice or in the Shortcuts app, on both iOS and macOS.
 - **Menu‑bar / tray native feel** — quick popover on macOS and Windows, with a full settings window.
 - **Tag manager** — add, rename, reorder, and delete your tag library.
 - **Auto‑updates** — Sparkle on macOS, Velopack on Windows, both delivered from GitHub Releases.
@@ -88,11 +93,16 @@ All platforms use the same protocol and can share a single server.
 ```
 Taggd/           iOS app + shared cross-platform Swift sources
 TaggdMac/        macOS menu-bar app (SwiftUI, Sparkle)
-TaggdWidget/     iOS Live Activity / widget
+TaggdWidget/     iOS Live Activity, Home Screen widgets, Control Center control
+TaggdMacWidget/  macOS widget extension (Notification Center / desktop)
 TaggdWin/        Windows tray app (WPF, .NET 8, Velopack)
-Shared/          Sources shared between the app and the widget
+Shared/          Sources shared by the apps and widget extensions (snapshot store, intents)
 project.yml      XcodeGen spec for the macOS target
 ```
+
+The apps and their widget extensions share a running-session snapshot through an
+**App Group**, so the widgets, Control Center, and Shortcuts all reflect and drive
+the same timer.
 
 ## Releases & auto‑updates
 

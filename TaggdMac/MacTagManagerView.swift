@@ -2,147 +2,73 @@
 //  MacTagManagerView.swift
 //  TaggdMac
 //
-//  Add, rename, delete, and reorder the tag library. Presented as the second
-//  screen of the Settings window; `onBack` returns to the settings list. macOS
-//  List has no EditButton/swipe-to-delete, so each row carries its own delete
-//  button and reordering is drag-based via `.onMove`.
+//  Add, edit, delete, and reorder the tag library. Hosted in its own window
+//  (opened from Settings → Manage Tags), so the standard traffic-light controls
+//  close it. Mirrors the iOS tag manager: a grouped table with an "Add a tag"
+//  row and a "Your Tags" section, plus a sheet (name + color picker) for adding
+//  or editing. macOS List has no swipe-to-delete, so each row carries its own
+//  trash button and reordering is drag-based via `.onMove`.
 //
 
 import SwiftUI
 
+/// What the editor sheet is doing: creating a new tag, or editing an existing one.
+private enum TagEditorTarget: Identifiable {
+    case new
+    case edit(Tag)
+
+    var id: String {
+        switch self {
+        case .new: return "new"
+        case .edit(let tag): return tag.id.uuidString
+        }
+    }
+}
+
 struct MacTagManagerView: View {
     @Environment(TagStore.self) private var store
-    let onBack: () -> Void
 
-    @State private var newTag = ""
-    @FocusState private var addFocused: Bool
+    @State private var editing: TagEditorTarget?
 
     var body: some View {
-        VStack(spacing: 0) {
-            HeaderBar(title: "Tags", leading: backButton) { EmptyView() }
-
-            VStack(alignment: .leading, spacing: 10) {
-                addRow
-
+        Form {
+            Section {
+                if store.tags.isEmpty {
+                    Text("No tags yet. Tap + to add one.")
+                        .font(.mono(13))
+                        .foregroundStyle(Theme.textTertiary)
+                } else {
+                    ForEach(store.tags) { tag in
+                        TagRow(tag: tag,
+                               onEdit: { editing = .edit(tag) },
+                               onDelete: { delete(tag) })
+                    }
+                    .onMove { store.move(from: $0, to: $1) }
+                }
+            } header: {
                 Text("Your Tags")
-                    .font(.mono(12, .medium))
-                    .foregroundStyle(Theme.textSecondary)
-                    .padding(.horizontal, 6)
-                    .padding(.top, 8)
+            } footer: {
+                Text("Click a tag to edit · drag to reorder · trash to delete.")
+                    .font(.mono(11))
+                    .foregroundStyle(Theme.textTertiary)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
-
-            tagList
-
-            Spacer(minLength: 0)
-
-            Text("Click a name to rename · drag to reorder · trash to delete.")
-                .font(.mono(11))
-                .foregroundStyle(Theme.textTertiary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 22)
-                .padding(.vertical, 14)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .formStyle(.grouped)
+        .scrollContentBackground(.hidden)
         .background(Theme.background)
+        .overlayScrollbars()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .overlay(alignment: .bottomTrailing) {
+            RoundActionButton(systemImage: "plus", help: "Add a tag") {
+                editing = .new
+            }
+        }
         .tint(Theme.accent)
         .preferredColorScheme(.dark)
-    }
-
-    /// The tag rows as a single grouped card. Backed by a real `List` (clipped
-    /// into the card shape) so native `.onMove` drag-reordering keeps working.
-    @ViewBuilder
-    private var tagList: some View {
-        if store.tags.isEmpty {
-            Text("No tags yet. Add one above.")
-                .font(.mono(13))
-                .foregroundStyle(Theme.textTertiary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 28)
-                .background(CardBackground())
-                .padding(.horizontal, 16)
-                .padding(.top, 8)
-        } else {
-            List {
-                ForEach(store.tags) { tag in
-                    TagRow(tag: tag,
-                           onRename: { store.rename(tag.id, to: $0) },
-                           onDelete: { delete(tag) })
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14))
-                    .listRowSeparatorTint(Theme.stroke)
-                }
-                .onMove { store.move(from: $0, to: $1) }
-            }
-            .scrollContentBackground(.hidden)
-            .listStyle(.plain)
-            .environment(\.defaultMinListRowHeight, 42)
-            .background(Theme.surface)
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(Theme.stroke, lineWidth: 1)
-            )
-            .overlayScrollbars()
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
+        .sheet(item: $editing) { target in
+            MacTagEditorSheet(target: target)
+                .environment(store)
         }
-    }
-
-    private var backButton: some View {
-        Button(action: onBack) {
-            HStack(spacing: 4) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 13, weight: .semibold))
-                Text("Settings")
-                    .font(.mono(14, .medium))
-            }
-            .foregroundStyle(Theme.accent)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Back to Settings")
-    }
-
-    private var addRow: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "tag")
-                .foregroundStyle(Theme.accent)
-            TextField(
-                "",
-                text: $newTag,
-                prompt: Text("Add a tag").foregroundColor(Theme.textTertiary)
-            )
-            .textFieldStyle(.plain)
-            .font(.mono(14))
-            .foregroundStyle(Theme.textPrimary)
-            .tint(Theme.accent)
-            .autocorrectionDisabled()
-            .focused($addFocused)
-            .onSubmit(add)
-
-            Button(action: add) {
-                Image(systemName: "plus.circle.fill")
-                    .font(.system(size: 19))
-                    .foregroundStyle(canAdd ? Theme.accent : Theme.textTertiary)
-            }
-            .buttonStyle(.plain)
-            .disabled(!canAdd)
-        }
-        .padding(.horizontal, 14)
-        .frame(height: 46)
-        .background(CardBackground())
-    }
-
-    private var canAdd: Bool {
-        !newTag.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    private func add() {
-        guard canAdd else { return }
-        store.add(newTag)
-        newTag = ""
-        addFocused = true
     }
 
     private func delete(_ tag: Tag) {
@@ -152,30 +78,28 @@ struct MacTagManagerView: View {
     }
 }
 
-/// A single editable tag row. Local state so typing feels responsive; commits
-/// to the store on change.
+/// A single tag row: color swatch, name (click to edit), and a trash button.
 private struct TagRow: View {
     let tag: Tag
-    let onRename: (String) -> Void
+    let onEdit: () -> Void
     let onDelete: () -> Void
-    @State private var name: String
-
-    init(tag: Tag, onRename: @escaping (String) -> Void, onDelete: @escaping () -> Void) {
-        self.tag = tag
-        self.onRename = onRename
-        self.onDelete = onDelete
-        _name = State(initialValue: tag.name)
-    }
 
     var body: some View {
         HStack(spacing: 10) {
-            TextField("Tag name", text: $name)
-                .textFieldStyle(.plain)
-                .font(.mono(14))
-                .foregroundStyle(Theme.textPrimary)
-                .tint(Theme.accent)
-                .autocorrectionDisabled()
-                .onChange(of: name) { _, newValue in onRename(newValue) }
+            Button(action: onEdit) {
+                HStack(spacing: 10) {
+                    Circle()
+                        .fill(tag.color)
+                        .frame(width: 13, height: 13)
+                        .overlay(Circle().strokeBorder(Color.white.opacity(0.15), lineWidth: 1))
+                    Text(tag.name)
+                        .font(.mono(14))
+                        .foregroundStyle(Theme.textPrimary)
+                    Spacer(minLength: 0)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
 
             Button(action: onDelete) {
                 Image(systemName: "trash")
@@ -186,4 +110,132 @@ private struct TagRow: View {
             .accessibilityLabel("Delete tag \(tag.name)")
         }
     }
+}
+
+/// Sheet for creating or editing a tag: a name field plus a color palette and a
+/// custom color picker. Uses a NavigationStack so Cancel / Save render as native
+/// macOS toolbar buttons, matching the iOS editor.
+private struct MacTagEditorSheet: View {
+    @Environment(TagStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
+
+    let target: TagEditorTarget
+
+    @State private var name: String
+    @State private var color: Color
+
+    init(target: TagEditorTarget) {
+        self.target = target
+        switch target {
+        case .new:
+            _name = State(initialValue: "")
+            _color = State(initialValue: Color(hexString: Tag.defaultColorHex) ?? Theme.accent)
+        case .edit(let tag):
+            _name = State(initialValue: tag.name)
+            _color = State(initialValue: tag.color)
+        }
+    }
+
+    var body: some View {
+        SheetScaffold(
+            title: isEditing ? "Edit Tag" : "New Tag",
+            confirmTitle: "Save",
+            saving: !canSave,
+            width: 420,
+            height: 450,
+            onCancel: { dismiss() },
+            onConfirm: save
+        ) {
+            nameCard
+            colorCard
+        }
+    }
+
+    private var nameCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionTitle("NAME")
+            TextField("Tag name", text: $name)
+                .font(.mono(15, .regular))
+                .foregroundStyle(Theme.textPrimary)
+                .tint(Theme.accent)
+                .onSubmit(save)
+                .themedField()
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(CardBackground())
+    }
+
+    private var colorCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionTitle("COLOR")
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 40), spacing: 12)],
+                spacing: 12
+            ) {
+                ForEach(Tag.palette, id: \.self) { hex in
+                    let swatch = Color(hexString: hex) ?? Theme.accent
+                    Button {
+                        color = swatch
+                    } label: {
+                        Circle()
+                            .fill(swatch)
+                            .frame(width: 30, height: 30)
+                            .overlay(Circle().strokeBorder(Color.white.opacity(0.15), lineWidth: 1))
+                            .overlay {
+                                if isSelected(swatch) {
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 13, weight: .bold))
+                                        .foregroundStyle(Color.black.opacity(0.85))
+                                }
+                            }
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+
+            Divider().overlay(Theme.stroke)
+
+            ColorPicker(selection: $color, supportsOpacity: false) {
+                Text("Custom color")
+                    .font(.mono(14, .regular))
+                    .foregroundStyle(Theme.textPrimary)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(CardBackground())
+    }
+
+    private var isEditing: Bool {
+        if case .edit = target { return true }
+        return false
+    }
+
+    private var canSave: Bool {
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func isSelected(_ swatch: Color) -> Bool {
+        swatch.toHexString() == color.toHexString()
+    }
+
+    private func save() {
+        guard canSave else { return }
+        let hex = color.toHexString()
+        switch target {
+        case .new:
+            store.add(name, colorHex: hex)
+        case .edit(let tag):
+            store.update(tag.id, name: name, colorHex: hex)
+        }
+        dismiss()
+    }
+}
+
+private func sectionTitle(_ text: String) -> some View {
+    Text(text)
+        .font(.mono(11, .medium))
+        .tracking(1.5)
+        .foregroundStyle(Theme.textTertiary)
 }

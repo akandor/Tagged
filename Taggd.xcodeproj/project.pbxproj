@@ -15,6 +15,10 @@
 		E1DE000000000000000B0006 /* TaggdLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DE000000000000000B0002 /* TaggdLiveActivity.swift */; };
 		E1DE000000000000000B0008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1DE000000000000000B0007 /* Assets.xcassets */; };
 		E1DE000000000000000D0002 /* TaggdWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E1DE000000000000000C0002 /* TaggdWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E1DE000000000000001A0002 /* WidgetSharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DE000000000000001A0001 /* WidgetSharedStore.swift */; };
+		E1DE000000000000001A0003 /* WidgetSharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DE000000000000001A0001 /* WidgetSharedStore.swift */; };
+		E1DE000000000000001B0002 /* TaggdEntryWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DE000000000000001B0001 /* TaggdEntryWidgets.swift */; };
+		E1DE000000000000001D0002 /* TaggdControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DE000000000000001D0001 /* TaggdControls.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +54,10 @@
 		E1DE000000000000000B0003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1DE000000000000000B0007 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1DE000000000000000C0002 /* TaggdWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TaggdWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1DE000000000000001A0001 /* WidgetSharedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSharedStore.swift; sourceTree = "<group>"; };
+		E1DE000000000000001B0001 /* TaggdEntryWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggdEntryWidgets.swift; sourceTree = "<group>"; };
+		E1DE000000000000001D0001 /* TaggdControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggdControls.swift; sourceTree = "<group>"; };
+		E1DE000000000000001C0001 /* TaggdWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaggdWidget.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -102,6 +110,7 @@
 			children = (
 				E1DE000000000000000A0001 /* SessionActivityAttributes.swift */,
 				E1DE000000000000000A0005 /* SessionControlIntents.swift */,
+				E1DE000000000000001A0001 /* WidgetSharedStore.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -111,8 +120,11 @@
 			children = (
 				E1DE000000000000000B0001 /* TaggdWidgetBundle.swift */,
 				E1DE000000000000000B0002 /* TaggdLiveActivity.swift */,
+				E1DE000000000000001B0001 /* TaggdEntryWidgets.swift */,
+				E1DE000000000000001D0001 /* TaggdControls.swift */,
 				E1DE000000000000000B0007 /* Assets.xcassets */,
 				E1DE000000000000000B0003 /* Info.plist */,
+				E1DE000000000000001C0001 /* TaggdWidget.entitlements */,
 			);
 			path = TaggdWidget;
 			sourceTree = "<group>";
@@ -234,6 +246,7 @@
 			files = (
 				E1DE000000000000000A0003 /* SessionActivityAttributes.swift in Sources */,
 				E1DE000000000000000A0006 /* SessionControlIntents.swift in Sources */,
+				E1DE000000000000001A0002 /* WidgetSharedStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +258,9 @@
 				E1DE000000000000000B0006 /* TaggdLiveActivity.swift in Sources */,
 				E1DE000000000000000A0004 /* SessionActivityAttributes.swift in Sources */,
 				E1DE000000000000000A0007 /* SessionControlIntents.swift in Sources */,
+				E1DE000000000000001A0003 /* WidgetSharedStore.swift in Sources */,
+				E1DE000000000000001B0002 /* TaggdEntryWidgets.swift in Sources */,
+				E1DE000000000000001D0002 /* TaggdControls.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,8 +401,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Taggd/Taggd.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = UE57845B3R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -402,7 +419,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toepper.rocks.Tagged;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -424,8 +441,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Taggd/Taggd.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = UE57845B3R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -441,7 +459,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toepper.rocks.Tagged;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -461,8 +479,9 @@
 		E1DE000000000000000C0007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TaggdWidget/TaggdWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = UE57845B3R;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaggdWidget/Info.plist;
@@ -473,7 +492,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toepper.rocks.Tagged.TaggdWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -486,8 +505,9 @@
 		E1DE000000000000000C0008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TaggdWidget/TaggdWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_TEAM = UE57845B3R;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TaggdWidget/Info.plist;
@@ -498,7 +518,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toepper.rocks.Tagged.TaggdWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

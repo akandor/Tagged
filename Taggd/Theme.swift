@@ -7,6 +7,11 @@
 
 import SwiftUI
 import CoreText
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 extension Color {
     /// Create a color from a 0xRRGGBB hex literal.
@@ -15,6 +20,31 @@ extension Color {
         let g = Double((hex >> 8) & 0xFF) / 255
         let b = Double(hex & 0xFF) / 255
         self.init(.sRGB, red: r, green: g, blue: b, opacity: alpha)
+    }
+
+    /// Create a color from an "RRGGBB" (or "#RRGGBB") string. Returns nil if unparseable.
+    init?(hexString: String) {
+        var s = hexString.trimmingCharacters(in: .whitespacesAndNewlines)
+        if s.hasPrefix("#") { s.removeFirst() }
+        guard s.count == 6, let value = UInt(s, radix: 16) else { return nil }
+        self.init(hex: value)
+    }
+
+    /// The color's "RRGGBB" hex string. Falls back to the accent hex if it can't be resolved.
+    func toHexString() -> String {
+        let r: CGFloat, g: CGFloat, b: CGFloat
+        #if canImport(UIKit)
+        var rr: CGFloat = 0, gg: CGFloat = 0, bb: CGFloat = 0, aa: CGFloat = 0
+        guard UIColor(self).getRed(&rr, green: &gg, blue: &bb, alpha: &aa) else { return "DEAA22" }
+        (r, g, b) = (rr, gg, bb)
+        #elseif canImport(AppKit)
+        guard let ns = NSColor(self).usingColorSpace(.sRGB) else { return "DEAA22" }
+        (r, g, b) = (ns.redComponent, ns.greenComponent, ns.blueComponent)
+        #else
+        return "DEAA22"
+        #endif
+        func channel(_ v: CGFloat) -> Int { min(255, max(0, Int(round(v * 255)))) }
+        return String(format: "%02X%02X%02X", channel(r), channel(g), channel(b))
     }
 }
 

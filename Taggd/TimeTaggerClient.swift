@@ -42,6 +42,12 @@ struct TimeTaggerClient {
 
     // MARK: - Records
 
+    /// A fresh, compact alphanumeric record key (TimeTagger keys are short strings).
+    static func generateKey() -> String {
+        let alphabet = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+        return String((0..<10).map { _ in alphabet.randomElement()! })
+    }
+
     /// A TimeTagger record. A *running* record has `t1 == t2`; a finished one has `t2 > t1`.
     /// Tags are encoded inline in `ds` as `#tag` tokens.
     struct Record: Codable {
@@ -58,6 +64,45 @@ struct TimeTaggerClient {
         case rejected(String)
         case badURL
         case failure(String)
+    }
+
+    enum RecordsResult {
+        case success([Record])
+        case unauthorized
+        case badURL
+        case failure(String)
+    }
+
+    /// Fetches records overlapping the `[start, end]` unix-second range. The server
+    /// replies with `{"records": [...]}`; deleted records (ds prefixed "HIDDEN") are
+    /// dropped so the caller only sees live entries.
+    func fetchRecords(from start: Int, to end: Int) async -> RecordsResult {
+        guard let url = apiURL("records?timerange=\(start)-\(end)") else { return .badURL }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(token, forHTTPHeaderField: "authtoken")
+        request.timeoutInterval = 15
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let http = response as? HTTPURLResponse else {
+                return .failure("No response from server")
+            }
+            switch http.statusCode {
+            case 200:
+                struct Envelope: Decodable { let records: [Record] }
+                let decoded = try JSONDecoder().decode(Envelope.self, from: data)
+                let live = decoded.records.filter { !$0.ds.hasPrefix("HIDDEN") }
+                return .success(live)
+            case 401, 403:
+                return .unauthorized
+            default:
+                return .failure("HTTP \(http.statusCode)")
+            }
+        } catch {
+            return .failure(error.localizedDescription)
+        }
     }
 
     /// PUTs one or more records. The body is a bare JSON array; the server replies
@@ -98,6 +143,19 @@ struct TimeTaggerClient {
         } catch {
             return .failure(error.localizedDescription)
         }
+    }
+
+    /// "Deletes" a record. TimeTagger keeps history, so deletion is a re-push of the
+    /// same key with its description hidden; the app then filters `HIDDEN` records out.
+    func deleteRecord(_ record: Record) async -> PushResult {
+        let hidden = Record(
+            key: record.key,
+            t1: record.t1,
+            t2: record.t2,
+            mt: Int(Date().timeIntervalSince1970),
+            ds: record.ds.hasPrefix("HIDDEN") ? record.ds : "HIDDEN " + record.ds
+        )
+        return await pushRecords([hidden])
     }
 
     /// Validates the server URL + token with a minimal authenticated request.

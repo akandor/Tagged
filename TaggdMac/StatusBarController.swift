@@ -62,6 +62,8 @@ final class StatusBarController {
     }
 
     private func showPopover(from button: NSStatusBarButton) {
+        // Refresh the widgets' "today" data whenever the user opens the popover.
+        Task { await WidgetBridge.refreshToday() }
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
         // Bring the popover to the front and give it key focus for text entry.
         popover.contentViewController?.view.window?.makeKey()

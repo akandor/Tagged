@@ -54,16 +54,16 @@ struct TagChip: View {
                 Image(systemName: "xmark")
                     .font(.system(size: 9, weight: .bold))
             }
-            .foregroundStyle(Theme.accent)
+            .foregroundStyle(tag.color)
             .padding(.leading, 11)
             .padding(.trailing, 9)
             .padding(.vertical, 6)
             .background(
                 Capsule(style: .continuous)
-                    .fill(Theme.accent.opacity(0.14))
+                    .fill(tag.color.opacity(0.14))
                     .overlay(
                         Capsule(style: .continuous)
-                            .strokeBorder(Theme.accent.opacity(0.35), lineWidth: 1)
+                            .strokeBorder(tag.color.opacity(0.35), lineWidth: 1)
                     )
             )
         }
@@ -74,6 +74,57 @@ struct TagChip: View {
 
 // MARK: - Buttons
 
+/// A big round action button that floats in the bottom-trailing corner of a
+/// window (add an entry, add a tag, retry all…). Uses the macOS 26 prominent
+/// glass style where available, with a solid accent circle as a fallback.
+/// Includes its own corner padding, so drop it straight into a
+/// `.overlay(alignment: .bottomTrailing)`.
+struct RoundActionButton: View {
+    let systemImage: String
+    var isBusy: Bool = false
+    var help: LocalizedStringKey
+    let action: () -> Void
+
+    var body: some View {
+        Group {
+            if #available(macOS 26.0, *) {
+                Button(action: action) { label }
+                    .buttonStyle(.glassProminent)
+                    .buttonBorderShape(.circle)
+                    .controlSize(.large)
+                    .tint(Theme.accent)
+                    .foregroundStyle(.black)
+            } else {
+                Button(action: action) {
+                    label
+                        .frame(width: 58, height: 58)
+                        .background(Circle().fill(Theme.accent))
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.black)
+            }
+        }
+        .shadow(color: .black.opacity(0.3), radius: 12, y: 5)
+        .disabled(isBusy)
+        .help(help)
+        .padding(24)
+    }
+
+    @ViewBuilder
+    private var label: some View {
+        if isBusy {
+            ProgressView()
+                .controlSize(.small)
+                .tint(.black)
+                .frame(width: 34, height: 34)
+        } else {
+            Image(systemName: systemImage)
+                .font(.system(size: 20, weight: .bold))
+                .frame(width: 34, height: 34)
+        }
+    }
+}
+
 struct PrimaryButton: View {
     let title: LocalizedStringKey
     let systemImage: String
@@ -83,6 +134,7 @@ struct PrimaryButton: View {
         Button(action: action) {
             Label(title, systemImage: systemImage)
                 .font(.mono(16, .semiBold))
+                .foregroundStyle(.black)
                 .frame(maxWidth: .infinity)
                 .frame(height: 46)
         }

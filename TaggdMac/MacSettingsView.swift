@@ -7,10 +7,9 @@
 //  Updates section wired to Sparkle. iOS-only rows (haptics, keep-screen-awake,
 //  App Store review) are dropped; Launch-at-Login and Quit are added.
 //
-//  Navigation into the tag manager uses an explicit route rather than
-//  NavigationStack: a plain NSWindow-hosted NavigationStack doesn't render a
-//  reliable back button, so we drive a simple two-screen switch and draw our
-//  own back / done controls in a header bar that matches the dark theme.
+//  The window relies on the standard macOS titlebar and traffic-light controls
+//  (no in-content chrome). "Manage Tags" opens the tag library in its own window
+//  so it, too, closes with the native controls.
 //
 
 import SwiftUI
@@ -20,16 +19,17 @@ struct MacSettingsView: View {
     @Environment(TagStore.self) private var tagStore
     @EnvironmentObject private var updater: UpdaterViewModel
 
-    let onClose: () -> Void
-
-    private enum Route { case settings, tags }
-    @State private var route: Route = .settings
+    let onManageTags: () -> Void
 
     private let githubURL = URL(string: "https://github.com/akandor/Tagged")!
     private let buyMeACoffeeURL = URL(string: "https://buymeacoffee.com/toepper.rocks")!
+    private let timetaggerURL = URL(string: "https://timetagger.app")!
 
     @AppStorage("confirmBeforeStop") private var confirmBeforeStop = false
     @AppStorage("automaticallyChecksForUpdates") private var autoUpdates = true
+
+    @AppStorage("weekStartsOn") private var weekStart: WeekStart = .monday
+    @AppStorage("workdays") private var workdays: Workdays = .mondayToFriday
 
     @AppStorage("serverURL") private var serverURL = ""
     @AppStorage("apiToken") private var apiToken = ""
@@ -43,47 +43,24 @@ struct MacSettingsView: View {
     }
 
     var body: some View {
-        ZStack {
-            Theme.background.ignoresSafeArea()
-            switch route {
-            case .settings:
-                settingsScreen
-                    .transition(.opacity)
-            case .tags:
-                MacTagManagerView(onBack: { withAnimation(.snappy) { route = .settings } })
-                    .environment(tagStore)
-                    .transition(.move(edge: .trailing).combined(with: .opacity))
-            }
+        Form {
+            serverSection
+            timerSection
+            entriesSection
+            tagsSection
+            updatesSection
+            supportSection
+            aboutSection
         }
+        .formStyle(.grouped)
+        .scrollContentBackground(.hidden)
+        .background(Theme.background)
+        .overlayScrollbars()
         .frame(minWidth: 480, maxWidth: .infinity, minHeight: 600, maxHeight: .infinity)
         .tint(Theme.accent)
         .preferredColorScheme(.dark)
         .onChange(of: autoUpdates) { _, newValue in
             updater.controller.updater.automaticallyChecksForUpdates = newValue
-        }
-    }
-
-    // MARK: - Settings screen
-
-    private var settingsScreen: some View {
-        VStack(spacing: 0) {
-            HeaderBar(title: "Settings") {
-                Button("Done", action: onClose)
-                    .font(.mono(14, .semiBold))
-                    .buttonStyle(.plain)
-                    .foregroundStyle(Theme.accent)
-            }
-            Form {
-                serverSection
-                timerSection
-                tagsSection
-                updatesSection
-                supportSection
-                aboutSection
-            }
-            .formStyle(.grouped)
-            .scrollContentBackground(.hidden)
-            .overlayScrollbars()
         }
     }
 
@@ -150,6 +127,16 @@ struct MacSettingsView: View {
             }
             .buttonStyle(.plain)
             .disabled(serverURL.isEmpty || apiToken.isEmpty || connection == .testing)
+            Link(destination: URL(string: serverURL)!) {
+                HStack {
+                    settingLabel("Open in Browser", "globe")
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+            .disabled(serverURL.isEmpty)
         } header: {
             Text("Server")
         } footer: {
@@ -225,20 +212,48 @@ struct MacSettingsView: View {
         }
     }
 
+    // MARK: - Entries
+
+    private var entriesSection: some View {
+        Section {
+            Picker(selection: $weekStart) {
+                ForEach(WeekStart.allCases) { option in
+                    Text(option.label).tag(option)
+                }
+            } label: {
+                settingLabel("Week Starts On", "calendar")
+            }
+            .tint(Theme.accent)
+
+            Picker(selection: $workdays) {
+                ForEach(Workdays.allCases) { option in
+                    Text(option.label).tag(option)
+                }
+            } label: {
+                settingLabel("Workdays", "briefcase")
+            }
+            .tint(Theme.accent)
+        } header: {
+            Text("Entries")
+        } footer: {
+            Text("Controls how the entries overview lays out each week.")
+                .font(.mono(11, .regular))
+                .foregroundStyle(Theme.textTertiary)
+        }
+    }
+
     // MARK: - Tags
 
     private var tagsSection: some View {
         Section("Tags") {
-            Button {
-                withAnimation(.snappy) { route = .tags }
-            } label: {
+            Button(action: onManageTags) {
                 HStack {
                     settingLabel("Manage Tags", "tag")
                     Spacer()
                     Text("\(tagStore.tags.count)")
                         .font(.mono(12))
                         .foregroundStyle(Theme.textSecondary)
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "arrow.up.forward.app")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(Theme.textTertiary)
                 }
@@ -319,6 +334,15 @@ struct MacSettingsView: View {
                 }
             }
             .buttonStyle(.plain)
+            Link(destination: timetaggerURL) {
+                HStack {
+                    settingLabel("TimeTagger", "number")
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
 
             Button {
                 NSApp.terminate(nil)

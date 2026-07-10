@@ -16,16 +16,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var statusController: StatusBarController!
     private var settingsWindow: NSWindow?
+    private var entriesWindow: NSWindow?
+    private var tagManagerWindow: NSWindow?
+    private var unsyncedWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Start as an accessory: status bar only, no Dock icon, no app menu.
         NSApp.setActivationPolicy(.accessory)
 
         statusController = StatusBarController(
-            content: MenuBarRootView(onOpenSettings: { [weak self] in self?.showSettings() })
+            content: MenuBarRootView(
+                onOpenSettings: { [weak self] in self?.showSettings() },
+                onOpenEntries: { [weak self] in self?.showEntries() },
+                onOpenUnsynced: { [weak self] in self?.showUnsynced() }
+            )
                 .environment(AppModel.shared.tracker)
                 .environment(AppModel.shared.tagStore)
+                .environment(OfflineStore.shared)
         )
+
+        // Apply anything tapped on a widget while the app was closed, then seed the
+        // widgets with the current session + today's overview.
+        AppModel.shared.tracker.applyPendingWidgetAction()
+        Task { await WidgetBridge.refreshToday() }
     }
 
     // MARK: - Quit confirmation
@@ -63,20 +76,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusController.closePopover()
 
         if let window = settingsWindow {
-            promoteToRegular()
-            window.makeKeyAndOrderFront(nil)
+            present(window)
             return
         }
 
-        let root = MacSettingsView(onClose: { [weak self] in self?.settingsWindow?.close() })
+        let root = MacSettingsView(onManageTags: { [weak self] in self?.showTagManager() })
             .environment(AppModel.shared.tracker)
             .environment(AppModel.shared.tagStore)
             .environmentObject(updater)
 
         let hosting = NSHostingController(rootView: root)
         let window = NSWindow(contentViewController: hosting)
-        window.title = "Tagged Settings"
+        window.title = "Settings"
         window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+        // Let the dark content run up under the native titlebar so it reads as
+        // one surface rather than content below a system-gray bar.
+        window.titlebarAppearsTransparent = true
+        window.backgroundColor = NSColor(Theme.background)
         window.isReleasedWhenClosed = false
         window.setContentSize(NSSize(width: 540, height: 720))
         window.contentMinSize = NSSize(width: 640, height: 600)
@@ -84,22 +100,125 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.delegate = self
 
         settingsWindow = window
-        promoteToRegular()
-        window.makeKeyAndOrderFront(nil)
+        present(window)
     }
 
-    private func promoteToRegular() {
+    // MARK: - Tag manager window
+
+    /// Shows the tag library in its own window so the standard traffic-light
+    /// controls handle closing it.
+    func showTagManager() {
+        if let window = tagManagerWindow {
+            present(window)
+            return
+        }
+
+        let root = MacTagManagerView()
+            .environment(AppModel.shared.tagStore)
+
+        let hosting = NSHostingController(rootView: root)
+        let window = NSWindow(contentViewController: hosting)
+        window.title = "Tags"
+        window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+        window.titlebarAppearsTransparent = true
+        window.backgroundColor = NSColor(Theme.background)
+        window.isReleasedWhenClosed = false
+        window.setContentSize(NSSize(width: 460, height: 620))
+        window.contentMinSize = NSSize(width: 420, height: 480)
+        window.center()
+        window.delegate = self
+
+        tagManagerWindow = window
+        present(window)
+    }
+
+    // MARK: - Unsynced sessions window
+
+    /// Shows sessions saved offline in their own window so the standard
+    /// traffic-light controls handle closing it.
+    func showUnsynced() {
+        statusController.closePopover()
+
+        if let window = unsyncedWindow {
+            present(window)
+            return
+        }
+
+        let root = MacUnsyncedSessionsView()
+            .environment(OfflineStore.shared)
+
+        let hosting = NSHostingController(rootView: root)
+        let window = NSWindow(contentViewController: hosting)
+        window.title = "Unsynced"
+        window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+        window.titlebarAppearsTransparent = true
+        window.backgroundColor = NSColor(Theme.background)
+        window.isReleasedWhenClosed = false
+        window.setContentSize(NSSize(width: 460, height: 560))
+        window.contentMinSize = NSSize(width: 420, height: 420)
+        window.center()
+        window.delegate = self
+
+        unsyncedWindow = window
+        present(window)
+    }
+
+    // MARK: - Entries window
+
+    /// Shows the Time Entries window, promoting the app to a regular (Dock-visible)
+    /// app for as long as a window is open.
+    func showEntries() {
+        statusController.closePopover()
+
+        if let window = entriesWindow {
+            present(window)
+            return
+        }
+
+        let root = MacEntriesView(onClose: { [weak self] in self?.entriesWindow?.close() })
+            .environment(AppModel.shared.tracker)
+            .environment(AppModel.shared.tagStore)
+
+        let hosting = NSHostingController(rootView: root)
+        let window = NSWindow(contentViewController: hosting)
+        window.title = "Time Entries"
+        window.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+        window.titlebarAppearsTransparent = true
+        window.backgroundColor = NSColor(Theme.background)
+        window.isReleasedWhenClosed = false
+        window.setContentSize(NSSize(width: 640, height: 720))
+        window.contentMinSize = NSSize(width: 560, height: 600)
+        window.center()
+        window.delegate = self
+
+        entriesWindow = window
+        present(window)
+    }
+
+    /// Promotes the accessory app to a regular (Dock-visible) app and brings the
+    /// window fully to the front with focus. Ordering matters: the window must be
+    /// ordered front *after* the policy change and *before* activation, or it can
+    /// open behind other apps.
+    private func present(_ window: NSWindow) {
         NSApp.setActivationPolicy(.regular)
+        window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+        window.orderFrontRegardless()
     }
 }
 
-// MARK: - Settings window lifecycle
+// MARK: - Window lifecycle
 
 extension AppDelegate: NSWindowDelegate {
     func windowWillClose(_ notification: Notification) {
-        guard (notification.object as? NSWindow) === settingsWindow else { return }
-        // Back to a status-bar-only accessory: the Dock icon disappears again.
-        NSApp.setActivationPolicy(.accessory)
+        guard let closing = notification.object as? NSWindow,
+              closing === settingsWindow || closing === entriesWindow
+                || closing === tagManagerWindow || closing === unsyncedWindow else { return }
+        // Drop back to a status-bar-only accessory once no managed window remains
+        // open (the closing one is still counted as visible at this point).
+        let others = [settingsWindow, entriesWindow, tagManagerWindow, unsyncedWindow].compactMap { $0 }.filter { $0 !== closing && $0.isVisible }
+        if others.isEmpty {
+            NSApp.setActivationPolicy(.accessory)
+        }
     }
 }

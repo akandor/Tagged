@@ -163,6 +163,9 @@
         }
       }
     },
+    "^[%lld session](inflect: true) not synced" : {
+
+    },
     "About" : {
       "localizations" : {
         "de" : {
@@ -319,6 +322,9 @@
         }
       }
     },
+    "All Synced" : {
+
+    },
     "API Token" : {
       "localizations" : {
         "de" : {
@@ -424,6 +430,7 @@
       }
     },
     "Back to Settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -632,6 +639,7 @@
       }
     },
     "Click a name to rename · drag to reorder · trash to delete." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -682,6 +690,9 @@
           }
         }
       }
+    },
+    "Click a tag to edit · drag to reorder · trash to delete." : {
+
     },
     "Confirm Before Stop" : {
       "localizations" : {
@@ -787,6 +798,12 @@
         }
       }
     },
+    "Controls how the entries overview lays out each week." : {
+
+    },
+    "Couldn't load entries" : {
+
+    },
     "Create a custom tag for this session." : {
       "localizations" : {
         "de" : {
@@ -838,6 +855,12 @@
           }
         }
       }
+    },
+    "Custom color" : {
+
+    },
+    "Delete" : {
+
     },
     "Delete tag %@" : {
       "localizations" : {
@@ -891,6 +914,12 @@
         }
       }
     },
+    "Delete this entry?" : {
+
+    },
+    "Description" : {
+
+    },
     "Done" : {
       "localizations" : {
         "de" : {
@@ -942,6 +971,15 @@
           }
         }
       }
+    },
+    "Earlier" : {
+
+    },
+    "Edit" : {
+
+    },
+    "End" : {
+
     },
     "Enjoying Tagged? Fuel the next update." : {
       "localizations" : {
@@ -1046,6 +1084,12 @@
           }
         }
       }
+    },
+    "Entries" : {
+
+    },
+    "Every day" : {
+
     },
     "GitHub" : {
       "localizations" : {
@@ -1203,6 +1247,9 @@
         }
       }
     },
+    "Jump to this week" : {
+
+    },
     "Keep going" : {
       "localizations" : {
         "de" : {
@@ -1359,6 +1406,18 @@
         }
       }
     },
+    "Monday" : {
+
+    },
+    "Monday – Friday" : {
+
+    },
+    "Monday – Saturday" : {
+
+    },
+    "New entry" : {
+
+    },
     "New Tag" : {
       "localizations" : {
         "de" : {
@@ -1463,6 +1522,15 @@
         }
       }
     },
+    "No entries" : {
+
+    },
+    "No session is running." : {
+
+    },
+    "No sessions are waiting to be uploaded." : {
+
+    },
     "No tags yet — add one to categorize this session." : {
       "localizations" : {
         "de" : {
@@ -1515,7 +1583,11 @@
         }
       }
     },
+    "No tags yet." : {
+
+    },
     "No tags yet. Add one above." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1566,6 +1638,9 @@
           }
         }
       }
+    },
+    "No tags yet. Tap + to add one." : {
+
     },
     "Not saved" : {
       "localizations" : {
@@ -1619,7 +1694,14 @@
         }
       }
     },
+    "Nothing is being tracked." : {
+
+    },
+    "Open in Browser" : {
+
+    },
     "Open server in browser" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1775,6 +1857,25 @@
         }
       }
     },
+    "Pause Tracking" : {
+
+    },
+    "Paused at %@." : {
+
+    },
+    "Paused%@ at %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Paused%1$@ at %2$@."
+          }
+        }
+      }
+    },
+    "Pauses the running session." : {
+
+    },
     "Quit Tagged" : {
       "localizations" : {
         "de" : {
@@ -1879,6 +1980,9 @@
         }
       }
     },
+    "Reports whether a session is running and for how long." : {
+
+    },
     "Resume" : {
       "localizations" : {
         "de" : {
@@ -1931,6 +2035,15 @@
         }
       }
     },
+    "Resume Tracking" : {
+
+    },
+    "Resumed." : {
+
+    },
+    "Resumes a paused session." : {
+
+    },
     "Retry" : {
       "localizations" : {
         "de" : {
@@ -1982,6 +2095,18 @@
           }
         }
       }
+    },
+    "Retry All" : {
+
+    },
+    "Saturday" : {
+
+    },
+    "Save" : {
+
+    },
+    "Save Entry" : {
+
     },
     "Saved" : {
       "localizations" : {
@@ -2243,6 +2368,24 @@
         }
       }
     },
+    "Start now" : {
+
+    },
+    "Start Now" : {
+
+    },
+    "Start Tracking" : {
+
+    },
+    "Start tracking ${taskDescription} with tag ${tag}" : {
+
+    },
+    "Started tracking%@." : {
+
+    },
+    "Starts a new time-tracking session." : {
+
+    },
     "Stop" : {
       "localizations" : {
         "de" : {
@@ -2347,6 +2490,21 @@
         }
       }
     },
+    "Stop Tracking" : {
+
+    },
+    "Stopped. You tracked %@." : {
+
+    },
+    "Stops the current session and saves it." : {
+
+    },
+    "Sunday" : {
+
+    },
+    "Sunday – Thursday" : {
+
+    },
     "Support" : {
       "localizations" : {
         "de" : {
@@ -2450,6 +2608,9 @@
           }
         }
       }
+    },
+    "Tag" : {
+
     },
     "Tag name" : {
       "localizations" : {
@@ -2763,6 +2924,21 @@
         }
       }
     },
+    "There's no paused session to resume." : {
+
+    },
+    "There's no running session to pause." : {
+
+    },
+    "These sessions are stored on this Mac and will not sync automatically. Click a session — or Retry All — to upload it to your server." : {
+
+    },
+    "This removes it from the server and can't be undone here." : {
+
+    },
+    "Time entries" : {
+
+    },
     "Timer" : {
       "localizations" : {
         "de" : {
@@ -2814,6 +2990,31 @@
           }
         }
       }
+    },
+    "TimeTagger" : {
+
+    },
+    "Total" : {
+
+    },
+    "Tracking Status" : {
+
+    },
+    "Tracking%@ for %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tracking%1$@ for %2$@."
+          }
+        }
+      }
+    },
+    "Try Again" : {
+
+    },
+    "Unsynced sessions" : {
+
     },
     "Updates" : {
       "localizations" : {
@@ -2971,6 +3172,9 @@
         }
       }
     },
+    "Week Starts On" : {
+
+    },
     "What are you working on?" : {
       "localizations" : {
         "de" : {
@@ -3022,6 +3226,15 @@
           }
         }
       }
+    },
+    "When" : {
+
+    },
+    "Workdays" : {
+
+    },
+    "You're already tracking." : {
+
     },
     "Your Tags" : {
       "localizations" : {
